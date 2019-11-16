@@ -829,7 +829,10 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	VectorScale (forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
+	//fire_bfg(ent,start,forward,500,500,100);
+	//fire_rocket(ent, start, forward, 500, 50, 100,100);
 	fire_blaster (ent, start, forward, damage, 1000, effect, hyper);
+	//gi.bprintf(PRINT_MEDIUM, "nice job, idiot" );
 
 	// send muzzle flash
 	gi.WriteByte (svc_muzzleflash);
@@ -891,11 +894,7 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 		}
 		else
 		{
-			rotation = (ent->client->ps.gunframe - 5) * 2*M_PI/6;
-			offset[0] = -4 * sin(rotation);
-			offset[1] = 0;
-			offset[2] = 4 * cos(rotation);
-
+			
 			if ((ent->client->ps.gunframe == 6) || (ent->client->ps.gunframe == 9))
 				effect = EF_HYPERBLASTER;
 			else
@@ -904,6 +903,31 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 				damage = 15;
 			else
 				damage = 20;
+
+
+			rotation = (ent->client->ps.gunframe - 5) * 2 * M_PI / 6;
+			offset[0] = -4 * sin(rotation);
+			offset[1] = 0;
+			offset[2] = 4 * cos(rotation);
+
+			// fire a second blast at a different rotation
+			rotation = (ent->client->ps.gunframe - 5) * 2 * M_PI / 6 + M_PI*2.0 / 3.0;
+			offset[0] = 0;
+			offset[1] = -8 * sin(rotation);
+			offset[2] = 8 * cos(rotation);
+			Blaster_Fire(ent, offset, 20, true, effect);
+			//
+
+			// fire a third blast at a different rotation
+			rotation = (ent->client->ps.gunframe - 5) * 2 * M_PI / 6 + M_PI*4.0 / 3.0;
+			offset[0] = 0;
+			offset[1] = -8 * sin(rotation);
+			offset[2] = 8 * cos(rotation);
+			Blaster_Fire(ent, offset, 20, true, effect);
+			// deduct 3 times the amount of ammo as before (... the *3 on end)
+
+
+
 			Blaster_Fire (ent, offset, damage, true, effect);
 			if (! ( (int)dmflags->value & DF_INFINITE_AMMO ) )
 				ent->client->pers.inventory[ent->client->ammo_index]--;

@@ -195,7 +195,8 @@ MOVETYPE_STEP,			// gravity, special edge handling
 MOVETYPE_FLY,
 MOVETYPE_TOSS,			// gravity
 MOVETYPE_FLYMISSILE,	// extra size to monsters
-MOVETYPE_BOUNCE
+MOVETYPE_BOUNCE,		// STEVE added a comma here
+MOVETYPE_FLYRICOCHET	// STEVE added this so bolts can bounce off walls !
 } movetype_t;
 
 
