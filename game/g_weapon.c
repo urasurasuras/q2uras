@@ -342,7 +342,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 		//Blaster_Fire(self, offset, 20, true, EF_BLASTER);
 		/*AngleVectors(self->, forward, right, 1);
 		fire_blaster(self, vec3_origin, forward, 20, 1000, effect, 0);*/
-		//return;		//so blaster hit doesn't die when it hits a wall
+		return;		//so blaster hit doesn't die when it hits a wall
 		gi.WriteByte (svc_temp_entity);
 		gi.WriteByte (TE_BLASTER);
 		gi.WritePosition (self->s.origin);
@@ -375,7 +375,7 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	vectoangles (dir, bolt->s.angles);
 	//gi.bprintf(PRINT_HIGH, dir);//
 	VectorScale (dir, speed, bolt->velocity);
-	bolt->movetype = MOVETYPE_FLYMISSILE;
+	bolt->movetype = MOVETYPE_FLYRICOCHET;
 	bolt->clipmask = MASK_SHOT;
 	bolt->solid = SOLID_BBOX;
 	bolt->s.effects |= effect;

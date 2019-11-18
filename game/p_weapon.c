@@ -830,10 +830,10 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	ent->client->kick_angles[0] = -1;
 
 	fire_blaster (ent, start, forward, damage, 1000, effect, hyper);
-
-	AngleVectorsToRight(ent->client->v_angle, forward, right, NULL);
+	//fire 2 more times after setting different angles
+	AngleVectorsWithOffset(ent->client->v_angle, forward, right, NULL,150,NULL,NULL);
 	fire_blaster(ent, start, forward, damage, 1000, effect, hyper);
-	AngleVectorsToLeft(ent->client->v_angle, forward, right, NULL);
+	AngleVectorsWithOffset(ent->client->v_angle, forward, right, NULL,-150,NULL,NULL);
 	fire_blaster(ent, start, forward, damage, 1000, effect, hyper);
 
 	// send muzzle flash
