@@ -18,7 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "g_local.h"
+
 void bfg_think(edict_t *self);
+void Blaster_Fire(edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, int effect);
 
 
 /*
@@ -306,6 +308,13 @@ Fires a single blaster bolt.  Used by the blaster and hyper blaster.
 */
 void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
+	float	rotation;
+
+	vec3_t	forward, right;
+	vec3_t	offset;
+	int		effect;
+
+
 	int		mod;
 
 	if (other == self->owner)
@@ -330,7 +339,10 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 	}
 	else
 	{
-		return;		//so blaster hit doesn't die when it hits a wall
+		//Blaster_Fire(self, offset, 20, true, EF_BLASTER);
+		/*AngleVectors(self->, forward, right, 1);
+		fire_blaster(self, vec3_origin, forward, 20, 1000, effect, 0);*/
+		//return;		//so blaster hit doesn't die when it hits a wall
 		gi.WriteByte (svc_temp_entity);
 		gi.WriteByte (TE_BLASTER);
 		gi.WritePosition (self->s.origin);
@@ -361,8 +373,9 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	VectorCopy (start, bolt->s.origin);
 	VectorCopy (start, bolt->s.old_origin);
 	vectoangles (dir, bolt->s.angles);
+	//gi.bprintf(PRINT_HIGH, dir);//
 	VectorScale (dir, speed, bolt->velocity);
-	bolt->movetype = MOVETYPE_FLYRICOCHET;
+	bolt->movetype = MOVETYPE_FLYMISSILE;
 	bolt->clipmask = MASK_SHOT;
 	bolt->solid = SOLID_BBOX;
 	bolt->s.effects |= effect;

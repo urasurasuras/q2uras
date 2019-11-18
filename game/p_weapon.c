@@ -829,10 +829,12 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	VectorScale (forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
-	//fire_bfg(ent,start,forward,500,500,100);
-	//fire_rocket(ent, start, forward, 500, 50, 100,100);
 	fire_blaster (ent, start, forward, damage, 1000, effect, hyper);
-	//gi.bprintf(PRINT_MEDIUM, "nice job, idiot" );
+
+	AngleVectorsToRight(ent->client->v_angle, forward, right, NULL);
+	fire_blaster(ent, start, forward, damage, 1000, effect, hyper);
+	AngleVectorsToLeft(ent->client->v_angle, forward, right, NULL);
+	fire_blaster(ent, start, forward, damage, 1000, effect, hyper);
 
 	// send muzzle flash
 	gi.WriteByte (svc_muzzleflash);
@@ -849,13 +851,34 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 
 void Weapon_Blaster_Fire (edict_t *ent)
 {
-	int		damage;
+	float	rotation;
+	vec3_t	offset;
 
+	int		damage;
+	// STEVE
+	vec3_t tempvec;
 	if (deathmatch->value)
 		damage = 15;
 	else
 		damage = 10;
-	Blaster_Fire (ent, vec3_origin, damage, false, EF_BLASTER);
+	//Blaster_Fire (ent, vec3_origin, damage, false, EF_BLASTER);
+
+	// change the offset radius to 6 (from 4), spread the bolts out a little
+	rotation = (ent->client->ps.gunframe - 5) * 2 * M_PI / 6;
+	offset[0] = 0;
+	offset[1] = 0;
+	offset[2] = 0;
+	Blaster_Fire(ent, offset, 20, true, EF_BLASTER);
+
+	// STEVE : add 2 new bolts below
+	/*VectorSet(tempvec, 0, 8, 0);
+	VectorAdd(tempvec, vec3_origin, tempvec);
+	Blaster_Fire(ent, tempvec, damage, false, EF_BLASTER);
+
+	VectorSet(tempvec, 0, -8, 0);
+	VectorAdd(tempvec, vec3_origin, tempvec);
+	Blaster_Fire(ent, tempvec, damage, false, EF_BLASTER);*/
+
 	ent->client->ps.gunframe++;
 }
 
@@ -909,26 +932,26 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 			offset[0] = -4 * sin(rotation);
 			offset[1] = 0;
 			offset[2] = 4 * cos(rotation);
+			Blaster_Fire(ent, offset, damage, true, effect);
 
 			// fire a second blast at a different rotation
 			rotation = (ent->client->ps.gunframe - 5) * 2 * M_PI / 6 + M_PI*2.0 / 3.0;
-			offset[0] = 0;
-			offset[1] = -8 * sin(rotation);
-			offset[2] = 8 * cos(rotation);
+			offset[0] = -4 * sin(rotation);
+			offset[1] = 0;
+			offset[2] = 4 * cos(rotation);
 			Blaster_Fire(ent, offset, 20, true, effect);
 			//
 
 			// fire a third blast at a different rotation
 			rotation = (ent->client->ps.gunframe - 5) * 2 * M_PI / 6 + M_PI*4.0 / 3.0;
-			offset[0] = 0;
-			offset[1] = -8 * sin(rotation);
-			offset[2] = 8 * cos(rotation);
+			offset[0] = -4 * sin(rotation);
+			offset[1] = 0;
+			offset[2] = 4 * cos(rotation);
 			Blaster_Fire(ent, offset, 20, true, effect);
 			// deduct 3 times the amount of ammo as before (... the *3 on end)
 
 
 
-			Blaster_Fire (ent, offset, damage, true, effect);
 			if (! ( (int)dmflags->value & DF_INFINITE_AMMO ) )
 				ent->client->pers.inventory[ent->client->ammo_index]--;
 
