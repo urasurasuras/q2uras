@@ -310,12 +310,13 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 {
 	float	rotation;
 
-	vec3_t	forward, right;
+	vec3_t	forward, right,start;
 	vec3_t	offset;
 	int		effect;
 
 
 	int		mod;
+
 
 	if (other == self->owner)
 		return;
@@ -340,9 +341,8 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 	else
 	{
 		//Blaster_Fire(self, offset, 20, true, EF_BLASTER);
-		/*AngleVectors(self->, forward, right, 1);
-		fire_blaster(self, vec3_origin, forward, 20, 1000, effect, 0);*/
-		return;		//so blaster hit doesn't die when it hits a wall
+		//AngleVectors(self->, forward, right, 1);
+		//return;		//so blaster hit doesn't die when it hits a wall
 		gi.WriteByte (svc_temp_entity);
 		gi.WriteByte (TE_BLASTER);
 		gi.WritePosition (self->s.origin);
@@ -352,6 +352,12 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 			gi.WriteDir (plane->normal);
 		gi.multicast (self->s.origin, MULTICAST_PVS);
 	}
+	//P_ProjectSource(self->client, self->s.origin, offset, forward, right, start);
+	AngleVectors(self->owner , forward, NULL, NULL);
+	/*if (!self->movedir)
+		gi.bprintf(PRINT_MEDIUM, "movedir exists\n");*/
+	fire_grenade(self, self->s.origin, plane->normal, 20, 50, EF_GRENADE, 0);
+
 
 	G_FreeEdict (self);
 }

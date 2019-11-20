@@ -134,7 +134,7 @@ void AngleVectorsWithOffset(vec3_t angles, vec3_t forward, vec3_t right, vec3_t 
 	static float		sr, sp, sy, cr, cp, cy;
 	// static to help MS compiler fp bugs
 
-	angle = angles[YAW] * (M_PI * 2 / 360)+yawOffset;
+	angle = angles[YAW+yawOffset] * (M_PI * 2 / 360);
 	sy = sin(angle);
 	cy = cos(angle);
 	angle = angles[PITCH] * (M_PI * 2 / 360)+pitchOffset;
