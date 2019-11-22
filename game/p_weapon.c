@@ -800,7 +800,7 @@ void Weapon_RocketLauncher (edict_t *ent)
 {
 	static int	pause_frames[]	= {25, 33, 42, 50, 0};
 	static int	fire_frames[]	= {5, 0};
-
+	gi.bprintf(PRINT_MEDIUM, ent->client->pers.weapon->classname);
 	Weapon_Generic (ent, 4, 12, 50, 54, pause_frames, fire_frames, Weapon_RocketLauncher_Fire);
 }
 
@@ -831,9 +831,9 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 
 	fire_blaster (ent, start, forward, damage, 1000, effect, hyper);
 	//fire 2 more times after setting different angles
-	AngleVectorsWithOffset(ent->client->v_angle, forward, right, NULL,15,NULL,NULL);
+	AngleVectorsWithOffset(ent->client->v_angle, forward, right, NULL,30,NULL,NULL);
 	fire_blaster(ent, start, forward, damage, 1000, effect, hyper);
-	AngleVectorsWithOffset(ent->client->v_angle, forward, right, NULL,-15,NULL,NULL);
+	AngleVectorsWithOffset(ent->client->v_angle, forward, right, NULL,-30,NULL,NULL);
 	fire_blaster(ent, start, forward, damage, 1000, effect, hyper);
 
 	// send muzzle flash
