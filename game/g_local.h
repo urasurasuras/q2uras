@@ -1111,4 +1111,9 @@ struct edict_s
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
 };
-
+//heroes
+#define	HERO_1		"Hero 1"	
+#define	HERO_2		2		
+#define	HERO_3		3		
+#define	HERO_4		4		
+#define	HERO_5		5		

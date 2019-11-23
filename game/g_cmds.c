@@ -20,6 +20,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 #include "m_player.h"
 
+static void P_ProjectSource(gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
+{
+	vec3_t	_distance;
+
+	VectorCopy(distance, _distance);
+	if (client->pers.hand == LEFT_HANDED)
+		_distance[1] *= -1;
+	else if (client->pers.hand == CENTER_HANDED)
+		_distance[1] = 0;
+	G_ProjectSource(point, _distance, forward, right, result);
+}
 
 char *ClientTeam (edict_t *ent)
 {
@@ -157,6 +168,44 @@ void Cmd_Give_f (edict_t *ent)
 	int			i;
 	qboolean	give_all;
 	edict_t		*it_ent;
+
+	//vec for player
+	vec3_t	forward, right;
+	vec3_t	start;
+	vec3_t	offset;
+
+	//Give hero
+	if (!Q_stricmp(gi.argv(1), "skill1"))
+	{
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
+			gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
+		
+		
+		AngleVectors(ent->client->v_angle, forward, right, NULL);
+		VectorSet(offset, 24, 8, ent->viewheight - 8);
+		//VectorAdd(offset, NULL, offset);
+		P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
+
+		VectorScale(forward, -2, ent->client->kick_origin);
+		ent->client->kick_angles[0] = -1;
+
+		fire_blaster(ent, start, forward, 10, 1000, EF_BLASTER, 0);
+
+
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
+			gi.bprintf(PRINT_MEDIUM, "Used blink! \n");
+		return;
+	}
+	else if (!Q_stricmp(gi.argv(1), "skill2"))
+	{
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
+			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_shotgun"))
+			gi.bprintf(PRINT_MEDIUM, "Used wraith form!\n");
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
+			gi.bprintf(PRINT_MEDIUM, "Used recall!\n");
+		return;
+	}
 
 	if (deathmatch->value && !sv_cheats->value)
 	{
@@ -899,7 +948,33 @@ void Cmd_PlayerList_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
 
+//give hero
+void SetHero(edict_t *ent){
 
+	//Give hero
+	if (!Q_stricmp(gi.argv(1), "1"))
+	{
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
+			gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
+			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
+		return;
+	}
+	else if (!Q_stricmp(gi.argv(1), "2"))
+	{
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
+			gi.bprintf(PRINT_MEDIUM, "Used blink!\n");
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
+			gi.bprintf(PRINT_MEDIUM, "Used recall!\n");
+		return;
+	}
+
+	/*if ((strcmp(ent->client->pers.weapon->classname, "Weapon_RocketLauncher") == 0)){
+	hero = HERO_1;
+	gi.bprintf(PRINT_MEDIUM, hero);
+	}*/
+
+}
 /*
 =================
 ClientCommand
@@ -987,6 +1062,11 @@ void ClientCommand (edict_t *ent)
 		Cmd_Wave_f (ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
+
+	/*else if (Q_stricmp(cmd, "skill") == 0){
+		SetHero(ent);
+	}*/
+
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }
