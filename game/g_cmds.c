@@ -188,8 +188,7 @@ void Cmd_Give_f (edict_t *ent)
 
 		VectorScale(forward, -2, ent->client->kick_origin);
 		ent->client->kick_angles[0] = -1;
-
-		fire_blaster(ent, start, forward, 10, 1000, EF_BLASTER, 0);
+		fire_scatter(ent, start, forward, 10, 1000, EF_BLASTER, 0);
 
 
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))

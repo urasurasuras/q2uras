@@ -356,7 +356,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 	AngleVectors(self->owner , forward, NULL, NULL);
 	/*if (!self->movedir)
 		gi.bprintf(PRINT_MEDIUM, "movedir exists\n");*/
-	fire_grenade(self, self->s.origin, plane->normal, 20, 50, EF_GRENADE, 0);
+	//fire_grenade(self, self->s.origin, plane->normal, 20, 50, EF_GRENADE, 0);
 
 
 	G_FreeEdict (self);
@@ -409,6 +409,272 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 		bolt->touch (bolt, tr.ent, NULL, NULL);
 	}
 }	
+//SCATTER TOUCH
+void scatter_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
+{
+	float	rotation;
+
+	vec3_t	forward, right, start;
+	vec3_t	offset;
+	int		effect;
+
+
+	int		mod;
+
+
+	if (other == self->owner)
+		return;
+
+	if (surf && (surf->flags & SURF_SKY))
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	if (self->owner->client)
+		PlayerNoise(self->owner, self->s.origin, PNOISE_IMPACT);
+
+	if (other->takedamage)
+	{
+		if (self->spawnflags & 1)
+			mod = MOD_HYPERBLASTER;
+		else
+			mod = MOD_BLASTER;
+		T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+	}
+	else
+	{
+		//Blaster_Fire(self, offset, 20, true, EF_BLASTER);
+		//AngleVectors(self->, forward, right, 1);
+		//return;		//so blaster hit doesn't die when it hits a wall
+		gi.WriteByte(svc_temp_entity);
+		gi.WriteByte(TE_BLASTER);
+		gi.WritePosition(self->s.origin);
+		if (!plane)
+			gi.WriteDir(vec3_origin);
+		else
+			gi.WriteDir(plane->normal);
+		gi.multicast(self->s.origin, MULTICAST_PVS);
+	}
+	//P_ProjectSource(self->client, self->s.origin, offset, forward, right, start);
+	AngleVectors(self->owner, forward, NULL, NULL);
+	/*if (!self->movedir)
+	gi.bprintf(PRINT_MEDIUM, "movedir exists\n");*/
+
+	//FIRE 5 SCATTER ARROWS WITH SLIGHTLY DIFFERENT ANGLES
+	fire_scattered(self, self->s.origin, plane->normal, 10, 2000, EF_BLASTER, 0);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL,15,NULL,NULL);
+	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL, -15, NULL, NULL);
+	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL, 30, NULL, NULL);
+	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL, -30, NULL, NULL);
+	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
+
+
+	G_FreeEdict(self);
+}
+//SCATTER ARROW
+void fire_scatter(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
+{
+	edict_t	*bolt;
+	trace_t	tr;
+
+	VectorNormalize(dir);
+
+	bolt = G_Spawn();
+	bolt->svflags = SVF_DEADMONSTER;
+	// yes, I know it looks weird that projectiles are deadmonsters
+	// what this means is that when prediction is used against the object
+	// (blaster/hyperblaster shots), the player won't be solid clipped against
+	// the object.  Right now trying to run into a firing hyperblaster
+	// is very jerky since you are predicted 'against' the shots.
+	VectorCopy(start, bolt->s.origin);
+	VectorCopy(start, bolt->s.old_origin);
+	vectoangles(dir, bolt->s.angles);
+	//gi.bprintf(PRINT_HIGH, dir);//
+	VectorScale(dir, speed, bolt->velocity);
+	bolt->movetype = MOVETYPE_FLYMISSILE;
+	bolt->clipmask = MASK_SHOT;
+	bolt->solid = SOLID_BBOX;
+	bolt->s.effects |= effect;
+	VectorClear(bolt->mins);
+	VectorClear(bolt->maxs);
+	bolt->s.modelindex = gi.modelindex("models/objects/laser/tris.md2");
+	bolt->s.sound = gi.soundindex("misc/lasfly.wav");
+	bolt->owner = self;
+	bolt->touch = scatter_touch;
+	bolt->nextthink = level.time + 2;
+	bolt->think = G_FreeEdict;
+	bolt->dmg = damage;
+	bolt->classname = "bolt";
+	if (hyper)
+		bolt->spawnflags = 1;
+	gi.linkentity(bolt);
+
+	if (self->client)
+		check_dodge(self, bolt->s.origin, dir, speed);
+
+	tr = gi.trace(self->s.origin, NULL, NULL, bolt->s.origin, bolt, MASK_SHOT);
+	if (tr.fraction < 1.0)
+	{
+		VectorMA(bolt->s.origin, -10, dir, bolt->s.origin);
+		bolt->touch(bolt, tr.ent, NULL, NULL);
+	}
+}
+//SCATTERED TOUCH
+void scattered_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf)
+{
+	float	rotation;
+
+	vec3_t	forward, right, start;
+	vec3_t	offset;
+	int		effect;
+
+
+	int		mod;
+
+
+	if (other == self->owner)
+		return;
+
+	if (surf && (surf->flags & SURF_SKY))
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	if (self->owner->client)
+		PlayerNoise(self->owner, self->s.origin, PNOISE_IMPACT);
+
+	if (other->takedamage)
+	{
+		if (self->spawnflags & 1)
+			mod = MOD_HYPERBLASTER;
+		else
+			mod = MOD_BLASTER;
+		T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+	}
+	else
+	{
+		//Blaster_Fire(self, offset, 20, true, EF_BLASTER);
+		//AngleVectors(self->, forward, right, 1);
+		return;		//so blaster hit doesn't die when it hits a wall
+		gi.WriteByte(svc_temp_entity);
+		gi.WriteByte(TE_BLASTER);
+		gi.WritePosition(self->s.origin);
+		if (!plane)
+			gi.WriteDir(vec3_origin);
+		else
+			gi.WriteDir(plane->normal);
+		gi.multicast(self->s.origin, MULTICAST_PVS);
+	}
+	//P_ProjectSource(self->client, self->s.origin, offset, forward, right, start);
+	AngleVectors(self->owner, forward, NULL, NULL);
+	/*if (!self->movedir)
+	gi.bprintf(PRINT_MEDIUM, "movedir exists\n");*/
+	//fire_grenade(self, self->s.origin, plane->normal, 20, 50, EF_GRENADE, 0);
+
+
+	G_FreeEdict(self);
+}
+//SCATTERed ARROW
+void fire_scattered(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
+{
+	edict_t	*bolt;
+	trace_t	tr;
+
+	VectorNormalize(dir);
+
+	bolt = G_Spawn();
+	bolt->svflags = SVF_DEADMONSTER;
+	// yes, I know it looks weird that projectiles are deadmonsters
+	// what this means is that when prediction is used against the object
+	// (blaster/hyperblaster shots), the player won't be solid clipped against
+	// the object.  Right now trying to run into a firing hyperblaster
+	// is very jerky since you are predicted 'against' the shots.
+	VectorCopy(start, bolt->s.origin);
+	VectorCopy(start, bolt->s.old_origin);
+	vectoangles(dir, bolt->s.angles);
+	//gi.bprintf(PRINT_HIGH, dir);//
+	VectorScale(dir, speed, bolt->velocity);
+	bolt->movetype = MOVETYPE_FLYRICOCHET;
+	bolt->clipmask = MASK_SHOT;
+	bolt->solid = SOLID_BBOX;
+	bolt->s.effects |= effect;
+	VectorClear(bolt->mins);
+	VectorClear(bolt->maxs);
+	bolt->s.modelindex = gi.modelindex("models/objects/laser/tris.md2");
+	bolt->s.sound = gi.soundindex("misc/lasfly.wav");
+	bolt->owner = self;
+	bolt->touch = scattered_touch;
+	bolt->nextthink = level.time + 2;
+	bolt->think = G_FreeEdict;
+	bolt->dmg = damage;
+	bolt->classname = "bolt";
+	if (hyper)
+		bolt->spawnflags = 1;
+	gi.linkentity(bolt);
+
+	if (self->client)
+		check_dodge(self, bolt->s.origin, dir, speed);
+
+	tr = gi.trace(self->s.origin, NULL, NULL, bolt->s.origin, bolt, MASK_SHOT);
+	if (tr.fraction < 1.0)
+	{
+		VectorMA(bolt->s.origin, -10, dir, bolt->s.origin);
+		bolt->touch(bolt, tr.ent, NULL, NULL);
+	}
+}
+//ARROW
+void fire_arrow(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
+{
+	edict_t	*bolt;
+	trace_t	tr;
+
+	VectorNormalize(dir);
+
+	bolt = G_Spawn();
+	bolt->svflags = SVF_DEADMONSTER;
+	// yes, I know it looks weird that projectiles are deadmonsters
+	// what this means is that when prediction is used against the object
+	// (blaster/hyperblaster shots), the player won't be solid clipped against
+	// the object.  Right now trying to run into a firing hyperblaster
+	// is very jerky since you are predicted 'against' the shots.
+	VectorCopy(start, bolt->s.origin);
+	VectorCopy(start, bolt->s.old_origin);
+	vectoangles(dir, bolt->s.angles);
+	//gi.bprintf(PRINT_HIGH, dir);//
+	VectorScale(dir, speed, bolt->velocity);
+	bolt->movetype = MOVETYPE_TOSS;
+	bolt->clipmask = MASK_SHOT;
+	bolt->solid = SOLID_BBOX;
+	bolt->s.effects |= effect;
+	VectorClear(bolt->mins);
+	VectorClear(bolt->maxs);
+	bolt->s.modelindex = gi.modelindex("models/objects/laser/tris.md2");
+	bolt->s.sound = gi.soundindex("misc/lasfly.wav");
+	bolt->owner = self;
+	bolt->touch = blaster_touch;
+	bolt->nextthink = level.time + 2;
+	bolt->think = G_FreeEdict;
+	bolt->dmg = damage;
+	bolt->classname = "bolt";
+	if (hyper)
+		bolt->spawnflags = 1;
+	gi.linkentity(bolt);
+
+	if (self->client)
+		check_dodge(self, bolt->s.origin, dir, speed);
+
+	tr = gi.trace(self->s.origin, NULL, NULL, bolt->s.origin, bolt, MASK_SHOT);
+	if (tr.fraction < 1.0)
+	{
+		VectorMA(bolt->s.origin, -10, dir, bolt->s.origin);
+		bolt->touch(bolt, tr.ent, NULL, NULL);
+	}
+}
 
 
 /*
