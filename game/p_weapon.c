@@ -1197,7 +1197,6 @@ void Chaingun_Fire (edict_t *ent)
 		VectorSet(offset, 0, r, u + ent->viewheight-8);
 		P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
 		
-		fire_arrow(ent, start, forward, damage, 1000, EF_BFG, 0);
 
 		//fire_bullet (ent, start, forward, damage, kick, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, MOD_CHAINGUN);
 	}
@@ -1382,7 +1381,9 @@ void weapon_railgun_fire (edict_t *ent)
 
 	VectorSet(offset, 0, 7,  ent->viewheight-8);
 	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
-	fire_rail (ent, start, forward, damage, kick);
+	fire_arrow(ent, start, forward, damage, 1000, EF_BLASTER, 0);
+
+	//fire_rail (ent, start, forward, damage, kick);
 
 	// send muzzle flash
 	gi.WriteByte (svc_muzzleflash);

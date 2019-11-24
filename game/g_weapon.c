@@ -463,13 +463,13 @@ void scatter_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 
 	//FIRE 5 SCATTER ARROWS WITH SLIGHTLY DIFFERENT ANGLES
 	fire_scattered(self, self->s.origin, plane->normal, 10, 2000, EF_BLASTER, 0);
-	AngleVectorsWithOffset(plane->normal, forward, right, NULL,15,NULL,NULL);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL,crandom(),crandom(),crandom());
 	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
-	AngleVectorsWithOffset(plane->normal, forward, right, NULL, -15, NULL, NULL);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL, crandom(), crandom(), crandom());
 	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
-	AngleVectorsWithOffset(plane->normal, forward, right, NULL, 30, NULL, NULL);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL, crandom(), crandom(), crandom());
 	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
-	AngleVectorsWithOffset(plane->normal, forward, right, NULL, -30, NULL, NULL);
+	AngleVectorsWithOffset(plane->normal, forward, right, NULL, crandom(), crandom(), crandom());
 	fire_scattered(self, self->s.origin, forward, 10, 2000, EF_BLASTER, 0);
 
 

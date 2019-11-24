@@ -177,27 +177,40 @@ void Cmd_Give_f (edict_t *ent)
 	//Give hero
 	if (!Q_stricmp(gi.argv(1), "skill1"))
 	{
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun")){
 			gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
-		
-		
-		AngleVectors(ent->client->v_angle, forward, right, NULL);
-		VectorSet(offset, 24, 8, ent->viewheight - 8);
-		//VectorAdd(offset, NULL, offset);
-		P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
-
-		VectorScale(forward, -2, ent->client->kick_origin);
-		ent->client->kick_angles[0] = -1;
-		fire_scatter(ent, start, forward, 10, 1000, EF_BLASTER, 0);
 
 
+			AngleVectors(ent->client->v_angle, forward, right, NULL);
+			VectorSet(offset, 24, 8, ent->viewheight - 8);
+			//VectorAdd(offset, NULL, offset);
+			P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
+
+			VectorScale(forward, -2, ent->client->kick_origin);
+			ent->client->kick_angles[0] = -1;
+			fire_scatter(ent, start, forward, 10, 1000, EF_BLASTER, 0);
+		}
+
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
+			gi.bprintf(PRINT_MEDIUM, "Used flashbang!\n");
+
+			AngleVectors(ent->client->v_angle, forward, right, NULL);
+			VectorSet(offset, 24, 8, ent->viewheight - 8);
+			//VectorAdd(offset, NULL, offset);
+			P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
+
+			VectorScale(forward, -2, ent->client->kick_origin);
+			ent->client->kick_angles[0] = -1;
+			fire_bfg(ent, start, forward, 0, 5000, 0);
+
+		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
 			gi.bprintf(PRINT_MEDIUM, "Used blink! \n");
 		return;
 	}
 	else if (!Q_stricmp(gi.argv(1), "skill2"))
 	{
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun"))
 			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_shotgun"))
 			gi.bprintf(PRINT_MEDIUM, "Used wraith form!\n");
