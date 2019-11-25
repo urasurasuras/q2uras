@@ -170,9 +170,11 @@ void Cmd_Give_f (edict_t *ent)
 	edict_t		*it_ent;
 
 	//vec for player
-	vec3_t	forward, right;
+	vec3_t	forward, right,up;
 	vec3_t	start;
 	vec3_t	offset;
+	vec3_t tempvec;
+
 
 	//Give hero
 	if (!Q_stricmp(gi.argv(1), "skill1"))
@@ -201,7 +203,7 @@ void Cmd_Give_f (edict_t *ent)
 
 			VectorScale(forward, -2, ent->client->kick_origin);
 			ent->client->kick_angles[0] = -1;
-			fire_bfg(ent, start, forward, 0, 5000, 0);
+			fire_flashbang(ent, ent->s.origin, forward, 0, 2500, 1);
 
 		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
@@ -212,10 +214,20 @@ void Cmd_Give_f (edict_t *ent)
 	{
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun"))
 			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_shotgun"))
-			gi.bprintf(PRINT_MEDIUM, "Used wraith form!\n");
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
-			gi.bprintf(PRINT_MEDIUM, "Used recall!\n");
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
+			gi.bprintf(PRINT_MEDIUM, "Used roll!\n");
+
+			AngleVectors(ent->client->v_angle, forward, NULL, up);
+			//VectorScale(up, 1000, ent->velocity);
+			VectorScale(forward, 500, ent->velocity);
+		}
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher")){
+			gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
+
+			AngleVectors(ent->client->v_angle, forward, NULL, up);
+			VectorScale(up, 1000, ent->velocity);
+			VectorScale(forward, 1000, ent->velocity);
+		}
 		return;
 	}
 
