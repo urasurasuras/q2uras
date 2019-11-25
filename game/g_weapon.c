@@ -1282,6 +1282,42 @@ void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, f
 	gi.linkentity (bfg);
 }
 
+//FIRE TESLA CANON
+void fire_tesla(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius)
+{
+	edict_t	*bfg;
+
+	bfg = G_Spawn();
+	VectorCopy(start, bfg->s.origin);
+	VectorCopy(dir, bfg->movedir);
+	vectoangles(dir, bfg->s.angles);
+	VectorScale(dir, speed, bfg->velocity);
+	bfg->movetype = MOVETYPE_FLYMISSILE;
+	bfg->clipmask = MASK_SHOT;
+	bfg->solid = SOLID_BBOX;
+	bfg->s.effects |= EF_PLASMA | EF_ANIM_ALLFAST;
+	VectorClear(bfg->mins);
+	VectorClear(bfg->maxs);
+	bfg->s.modelindex = gi.modelindex("sprites/s_bfg1.sp2");
+	bfg->owner = self;
+	bfg->touch = bfg_touch;
+	bfg->nextthink = level.time + 8000 / speed;
+	bfg->think = G_FreeEdict;
+	bfg->radius_dmg = damage;
+	bfg->dmg_radius = damage_radius;
+	bfg->classname = "bfg blast";
+	bfg->s.sound = gi.soundindex("weapons/bfg__l1a.wav");
+
+	bfg->think = bfg_think;
+	bfg->nextthink = level.time + FRAMETIME;
+	bfg->teammaster = bfg;
+	bfg->teamchain = NULL;
+
+	if (self->client)
+		check_dodge(self, bfg->s.origin, dir, speed);
+
+	gi.linkentity(bfg);
+}
 //FIRE FLASHBANG
 void fire_flashbang(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius)
 {

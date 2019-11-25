@@ -221,7 +221,7 @@ void Cmd_Give_f (edict_t *ent)
 			//VectorScale(up, 1000, ent->velocity);
 			VectorScale(forward, 500, ent->velocity);
 		}
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher")){
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_bfg")){
 			gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
 
 			AngleVectors(ent->client->v_angle, forward, NULL, up);
