@@ -169,6 +169,9 @@ void Cmd_Give_f (edict_t *ent)
 	qboolean	give_all;
 	edict_t		*it_ent;
 
+	//cooldown
+	static float time_since;
+
 	//vec for player
 	vec3_t	forward, right,up;
 	vec3_t	start;
@@ -224,9 +227,16 @@ void Cmd_Give_f (edict_t *ent)
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_bfg")){
 			gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
 
-			AngleVectors(ent->client->v_angle, forward, NULL, up);
-			VectorScale(up, 1000, ent->velocity);
-			VectorScale(forward, 1000, ent->velocity);
+			//time_since = level.time;
+
+			gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(time_since));
+
+			if (level.time> time_since + 6) {
+				time_since = level.time;
+				AngleVectors(ent->client->v_angle, forward, NULL, up);
+				VectorScale(up, 1000, ent->velocity);
+				VectorScale(forward, 1000, ent->velocity);
+			}
 		}
 		return;
 	}

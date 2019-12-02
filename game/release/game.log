@@ -1,80 +1,22 @@
-﻿Build started 11/25/2019 5:55:59 PM.
-     1>Project "E:\q2source\quake2-full\game\game.vcxproj" on node 2 (Build target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(357,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-     1>ClCompile:
-         E:\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Z7 /nologo /W4 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _WINDOWS /D _VC80_UPGRADE=0x0600 /D _WINDLL /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\release\\" /Fd".\release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt g_cmds.c
-         g_cmds.c
-     1>g_cmds.c(45): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(68): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(69): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(193): warning C4013: 'fire_scatter' undefined; assuming extern returning int
-     1>g_cmds.c(206): warning C4013: 'fire_flashbang' undefined; assuming extern returning int
-     1>g_cmds.c(176): warning C4101: 'tempvec' : unreferenced local variable
-     1>g_cmds.c(795): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(798): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(881): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(882): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(883): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(894): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(901): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-     1>g_cmds.c(964): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 E:\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>g_cmds.c(966): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 E:\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
-     1>g_cmds.c(970): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-       Link:
-         E:\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\SteamLibrary\steamapps\common\Quake 2\myMod\gamex86.dll" /INCREMENTAL:NO /NOLOGO winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:".\game.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"G:\SteamLibrary\steamapps\common\Quake 2\myMod\gamex86.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /BASE:"0x20000000" /DYNAMICBASE /NXCOMPAT /IMPLIB:".\..\release\gamex86.lib" /MACHINE:X86 /SAFESEH /DLL .\release\g_ai.obj
-         .\release\g_chase.obj
-         .\release\g_cmds.obj
-         .\release\g_combat.obj
-         .\release\g_func.obj
-         .\release\g_items.obj
-         .\release\g_main.obj
-         .\release\g_misc.obj
-         .\release\g_monster.obj
-         .\release\g_phys.obj
-         .\release\g_save.obj
-         .\release\g_spawn.obj
-         .\release\g_svcmds.obj
-         .\release\g_target.obj
-         .\release\g_trigger.obj
-         .\release\g_turret.obj
-         .\release\g_utils.obj
-         .\release\g_weapon.obj
-         .\release\m_actor.obj
-         .\release\m_berserk.obj
-         .\release\m_boss2.obj
-         .\release\m_boss3.obj
-         .\release\m_boss31.obj
-         .\release\m_boss32.obj
-         .\release\m_brain.obj
-         .\release\m_chick.obj
-         .\release\m_flash.obj
-         .\release\m_flipper.obj
-         .\release\m_float.obj
-         .\release\m_flyer.obj
-         .\release\m_gladiator.obj
-         .\release\m_gunner.obj
-         .\release\m_hover.obj
-         .\release\m_infantry.obj
-         .\release\m_insane.obj
-         .\release\m_medic.obj
-         .\release\m_move.obj
-         .\release\m_mutant.obj
-         .\release\m_parasite.obj
-         .\release\m_soldier.obj
-         .\release\m_supertank.obj
-         .\release\m_tank.obj
-         .\release\p_client.obj
-         .\release\p_hud.obj
-         .\release\p_trail.obj
-         .\release\p_view.obj
-         .\release\p_weapon.obj
-         .\release\q_shared.obj
-            Creating library .\..\release\gamex86.lib and object .\..\release\gamex86.exp
-         game.vcxproj -> G:\SteamLibrary\steamapps\common\Quake 2\myMod\gamex86.dll
-     1>Done Building Project "E:\q2source\quake2-full\game\game.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.61
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(357,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  g_cmds.c
+g_cmds.c(45): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(68): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(69): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(196): warning C4013: 'fire_scatter' undefined; assuming extern returning int
+g_cmds.c(209): warning C4013: 'fire_flashbang' undefined; assuming extern returning int
+g_cmds.c(179): warning C4101: 'tempvec' : unreferenced local variable
+g_cmds.c(805): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(808): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(891): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(892): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(893): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(904): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(911): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+g_cmds.c(974): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+g_cmds.c(976): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : see declaration of 'sprintf'
+g_cmds.c(980): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     Creating library .\..\release\gamex86.lib and object .\..\release\gamex86.exp
+  game.vcxproj -> C:\Users\uras9\Documents\IT266\q2uras\game\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Quake 2\MyMod\gamex86.dll
