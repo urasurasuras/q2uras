@@ -170,7 +170,7 @@ void Cmd_Give_f (edict_t *ent)
 	edict_t		*it_ent;
 
 	//cooldown
-	static float time_since;
+	static float cldn_wleap,cldn_mcroll,cldn_flash,cldn_scatter;
 
 	//vec for player
 	vec3_t	forward, right,up;
@@ -185,29 +185,33 @@ void Cmd_Give_f (edict_t *ent)
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun")){
 			gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
 
+			if (level.time > cldn_scatter + 10) {
+				cldn_scatter = level.time;
+				AngleVectors(ent->client->v_angle, forward, right, NULL);
+				VectorSet(offset, 24, 8, ent->viewheight - 8);
+				//VectorAdd(offset, NULL, offset);
+				P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
 
-			AngleVectors(ent->client->v_angle, forward, right, NULL);
-			VectorSet(offset, 24, 8, ent->viewheight - 8);
-			//VectorAdd(offset, NULL, offset);
-			P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
-
-			VectorScale(forward, -2, ent->client->kick_origin);
-			ent->client->kick_angles[0] = -1;
-			fire_scatter(ent, start, forward, 10, 1000, EF_BLASTER, 0);
+				VectorScale(forward, -2, ent->client->kick_origin);
+				ent->client->kick_angles[0] = -1;
+				fire_scatter(ent, start, forward, 10, 1000, EF_BLASTER, 0);
+			}
 		}
 
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
 			gi.bprintf(PRINT_MEDIUM, "Used flashbang!\n");
+			
+			if (level.time > cldn_flash + 8) {
+				cldn_flash = level.time;
+				AngleVectors(ent->client->v_angle, forward, right, NULL);
+				VectorSet(offset, 24, 8, ent->viewheight - 8);
+				//VectorAdd(offset, NULL, offset);
+				P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
 
-			AngleVectors(ent->client->v_angle, forward, right, NULL);
-			VectorSet(offset, 24, 8, ent->viewheight - 8);
-			//VectorAdd(offset, NULL, offset);
-			P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
-
-			VectorScale(forward, -2, ent->client->kick_origin);
-			ent->client->kick_angles[0] = -1;
-			fire_flashbang(ent, ent->s.origin, forward, 0, 2500, 1);
-
+				VectorScale(forward, -2, ent->client->kick_origin);
+				ent->client->kick_angles[0] = -1;
+				fire_flashbang(ent, ent->s.origin, forward, 0, 2500, 1);
+			}
 		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
 			gi.bprintf(PRINT_MEDIUM, "Used blink! \n");
@@ -219,20 +223,20 @@ void Cmd_Give_f (edict_t *ent)
 			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
 			gi.bprintf(PRINT_MEDIUM, "Used roll!\n");
-
-			AngleVectors(ent->client->v_angle, forward, NULL, up);
-			//VectorScale(up, 1000, ent->velocity);
-			VectorScale(forward, 500, ent->velocity);
+			if (level.time > cldn_mcroll + 8) {
+				cldn_mcroll = level.time;
+				AngleVectors(ent->client->v_angle, forward, NULL, up);
+				//VectorScale(up, 1000, ent->velocity);
+				VectorScale(forward, 500, ent->velocity);
+			}
 		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_bfg")){
 			gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
 
-			//time_since = level.time;
+			//gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(cldn_wleap));
 
-			gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(time_since));
-
-			if (level.time> time_since + 6) {
-				time_since = level.time;
+			if (level.time> cldn_wleap + 6) {
+				cldn_wleap = level.time;
 				AngleVectors(ent->client->v_angle, forward, NULL, up);
 				VectorScale(up, 1000, ent->velocity);
 				VectorScale(forward, 1000, ent->velocity);
