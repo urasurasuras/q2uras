@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "g_local.h"
 #include "m_player.h"
+#include "gamemode.h"
 
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
@@ -1757,6 +1758,8 @@ void ClientBeginServerFrame (edict_t *ent)
 	gclient_t	*client;
 	int			buttonMask;
 
+	extern int gamemode;	//gamemode
+
 	if (level.intermissiontime)
 		return;
 
@@ -1785,7 +1788,10 @@ void ClientBeginServerFrame (edict_t *ent)
 				buttonMask = BUTTON_ATTACK;
 			else
 				buttonMask = -1;
-
+			if ( gamemode = 1 && deathmatch->value) {
+				gi.bprintf(PRINT_HIGH, "Wait for next round to respawn...\n");
+				return;
+			}
 			if ( ( client->latched_buttons & buttonMask ) ||
 				(deathmatch->value && ((int)dmflags->value & DF_FORCE_RESPAWN) ) )
 			{

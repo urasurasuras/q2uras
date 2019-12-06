@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "g_local.h"
 #include "m_player.h"
+#include "gamemode.h"
+int gamemode;
 
 static void P_ProjectSource(gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
 {
@@ -169,6 +171,7 @@ void Cmd_Give_f (edict_t *ent)
 	qboolean	give_all;
 	edict_t		*it_ent;
 
+	//gamemode
 	//cooldown
 	static float cldn_wleap,cldn_mcroll,cldn_flash,cldn_scatter;
 
@@ -178,6 +181,10 @@ void Cmd_Give_f (edict_t *ent)
 	vec3_t	offset;
 	vec3_t tempvec;
 
+	//Give gamemode
+	if (!Q_stricmp(gi.argv(1), "3v3")) {
+		gamemode = 1;
+	}
 
 	//Give hero
 	if (!Q_stricmp(gi.argv(1), "skill1"))
@@ -199,7 +206,8 @@ void Cmd_Give_f (edict_t *ent)
 		}
 
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
-			gi.bprintf(PRINT_MEDIUM, "Used flashbang!\n");
+			gi.bprintf(PRINT_MEDIUM, "%f\n",dmflags->value);
+			//gi.bprintf(PRINT_MEDIUM, "%f\n",sv_cheats	->value);
 			
 			if (level.time > cldn_flash + 8) {
 				cldn_flash = level.time;
