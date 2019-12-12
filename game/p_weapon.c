@@ -889,6 +889,9 @@ void Weapon_Blaster (edict_t *ent)
 	static int	pause_frames[]	= {19, 32, 0};
 	static int	fire_frames[]	= {5, 0};
 
+	ent->client->pers.hero = "McCree";
+	gi.bprintf(PRINT_MEDIUM, ent->client->pers.hero);
+
 	Weapon_Generic (ent, 4, 7, 52, 55, pause_frames, fire_frames, Weapon_Blaster_Fire);
 }
 
@@ -1403,6 +1406,7 @@ void Weapon_Railgun (edict_t *ent)
 {
 	static int	pause_frames[]	= {56, 0};
 	static int	fire_frames[]	= {4, 0};
+	ent->client->pers.hero = "Hanzo";
 
 	Weapon_Generic (ent, 3, 18, 56, 61, pause_frames, fire_frames, weapon_railgun_fire);
 }
@@ -1542,6 +1546,7 @@ void Weapon_BFG (edict_t *ent)
 	Weapon_Generic (ent, 8, 32, 55, 58, pause_frames, fire_frames, weapon_bfg_fire);*/
 	static int	pause_frames[] = { 23, 45, 0 };
 	static int	fire_frames[] = { 4, 5, 0 };
+	ent->client->pers.hero = "Winston";
 
 	Weapon_Generic(ent, 3, 5, 45, 49, pause_frames, fire_frames, weapon_tesla_fire);
 }
