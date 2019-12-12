@@ -232,8 +232,10 @@ void Cmd_Give_f (edict_t *ent)
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash-(level.time-cldn_flash)));
 		}
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_machinegun"))
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_machinegun")){
 			gi.bprintf(PRINT_MEDIUM, "Used recall! \n");
+			VectorCopy(ent->client->pers.pos_to_recall, ent->s.origin);
+		}
 		return;
 	}
 

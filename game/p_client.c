@@ -25,6 +25,17 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
 
+static void P_ProjectSource(gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
+{
+	vec3_t	_distance;
+
+	VectorCopy(distance, _distance);
+	if (client->pers.hand == LEFT_HANDED)
+		_distance[1] *= -1;
+	else if (client->pers.hand == CENTER_HANDED)
+		_distance[1] = 0;
+	G_ProjectSource(point, _distance, forward, right, result);
+}
 //
 // Gross, ugly, disgustuing hack section
 //
@@ -1575,18 +1586,29 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	int		i, j;
 	pmove_t	pm;
 
+	//for pos
+	vec3_t	forward, right;
+	vec3_t	pos_cache;
+	vec3_t	offset;
+
 	level.current_entity = ent;
 	client = ent->client;
 
-	//blink
+	//KEEP TRACK OF BLINK RECHARGES
 	//gi.bprintf(PRINT_MEDIUM, "number of blinks! %d\n", ent->client->pers.num_blinks);
-
 	if ((ent->client->pers.num_blinks < 3 && ent->client->pers.num_blinks >= 0) && (level.time> cldn_blink + _blink)){
 		cldn_blink = level.time;
 		ent->client->pers.num_blinks++;
 		gi.bprintf(PRINT_MEDIUM, "Blink added! %d\n", ent->client->pers.num_blinks);
 		gi.bprintf(PRINT_MEDIUM, "Blink on cooldown! %d\n", (_blink - (level.time - cldn_blink)));
 
+	}
+	//KEEP TRACK OF RECALL TIME
+	if ((level.time > cldn_blink + _blink)){
+		//AngleVectors(ent->client->v_angle, forward, right, NULL);
+		//VectorSet(offset, 24, 8, ent->viewheight - 8);
+		//P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, pos_cache);
+		VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
 	}
 	//gi.bprintf(PRINT_MEDIUM, "thinking...\n", num_blinks);
 

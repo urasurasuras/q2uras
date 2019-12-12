@@ -864,8 +864,10 @@ typedef struct
 
 	int			game_helpchanged;
 	int			helpchanged;
+
 	char		*hero;
 	int			num_blinks;
+	vec3_t		pos_to_recall;
 
 	qboolean	spectator;			// client is a spectator
 } client_persistant_t;
