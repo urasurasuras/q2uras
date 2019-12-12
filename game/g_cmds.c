@@ -174,6 +174,7 @@ void Cmd_Give_f (edict_t *ent)
 	//gamemode
 	//cooldown
 	static float cldn_wleap,cldn_mcroll,cldn_flash,cldn_scatter;
+	static float _wleap=6,_mcroll=6,_flash=10,_scatter=10;
 
 	//vec for player
 	vec3_t	forward, right,up;
@@ -184,20 +185,22 @@ void Cmd_Give_f (edict_t *ent)
 	//Give gamemode
 	if (!Q_stricmp(gi.argv(1), "3v3")) {
 		gamemode = 1;
+		gi.bprintf(PRINT_MEDIUM, "Game mode set to: Elimination\n");
 	}
 
 	//Give hero
 	if (!Q_stricmp(gi.argv(1), "hero")){
-		gi.bprintf(PRINT_MEDIUM,"%s\n", ent->client->pers.hero);
+		gi.bprintf(PRINT_MEDIUM,"Current hero: %s\n", ent->client->pers.hero);
 	}
 
 	//Use skill
 	if (!Q_stricmp(gi.argv(1), "skill1"))
 	{
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun")){
-			gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
 
-			if (level.time > cldn_scatter + 10) {
+			if (level.time > cldn_scatter + _scatter) {
+				gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
+
 				cldn_scatter = level.time;
 				AngleVectors(ent->client->v_angle, forward, right, NULL);
 				VectorSet(offset, 24, 8, ent->viewheight - 8);
@@ -208,13 +211,15 @@ void Cmd_Give_f (edict_t *ent)
 				ent->client->kick_angles[0] = -1;
 				fire_scatter(ent, start, forward, 10, 1000, EF_BLASTER, 0);
 			}
+			else
+				gi.bprintf(PRINT_MEDIUM, "Scatter arrow on cooldown: %.1f\n", (_scatter-(level.time - cldn_scatter)));
 		}
 
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
-			gi.bprintf(PRINT_MEDIUM, "%f\n",dmflags->value);
+			//gi.bprintf(PRINT_MEDIUM, "%f\n",dmflags->value);
 			//gi.bprintf(PRINT_MEDIUM, "%f\n",sv_cheats	->value);
 			
-			if (level.time > cldn_flash + 8) {
+			if (level.time > cldn_flash + _flash) {
 				cldn_flash = level.time;
 				AngleVectors(ent->client->v_angle, forward, right, NULL);
 				VectorSet(offset, 24, 8, ent->viewheight - 8);
@@ -225,6 +230,8 @@ void Cmd_Give_f (edict_t *ent)
 				ent->client->kick_angles[0] = -1;
 				fire_flashbang(ent, ent->s.origin, forward, 0, 2500, 1);
 			}
+			else 
+				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash-(level.time-cldn_flash)));
 		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
 			gi.bprintf(PRINT_MEDIUM, "Used blink! \n");
@@ -235,19 +242,21 @@ void Cmd_Give_f (edict_t *ent)
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun"))
 			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
-			gi.bprintf(PRINT_MEDIUM, "Used roll!\n");
-			if (level.time > cldn_mcroll + 8) {
+			if (level.time > cldn_mcroll + _mcroll) {
+				gi.bprintf(PRINT_MEDIUM, "Used roll!\n");
 				cldn_mcroll = level.time;
 				AngleVectors(ent->client->v_angle, forward, NULL, up);
 				//VectorScale(up, 1000, ent->velocity);
 				VectorScale(forward, 500, ent->velocity);
 			}
+			else
+				gi.bprintf(PRINT_MEDIUM, "Combat roll on cooldown: %.1f\n", (_mcroll - (level.time - cldn_mcroll)));
 		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_bfg")){
 
 			//gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(cldn_wleap));
 
-			if (level.time> cldn_wleap + 6) 
+			if (level.time> cldn_wleap + _wleap) 
 			{
 				gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
 
@@ -256,6 +265,8 @@ void Cmd_Give_f (edict_t *ent)
 				VectorScale(up, 1000, ent->velocity);
 				VectorScale(forward, 1000, ent->velocity);
 			}
+			else 
+				gi.bprintf(PRINT_MEDIUM, "Leap on cooldown: %.1f\n", (_wleap-(level.time - cldn_wleap)));
 		}
 		return;
 	}
