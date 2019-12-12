@@ -187,6 +187,11 @@ void Cmd_Give_f (edict_t *ent)
 	}
 
 	//Give hero
+	if (!Q_stricmp(gi.argv(1), "hero")){
+		gi.bprintf(PRINT_MEDIUM,"%s\n", ent->client->pers.hero);
+	}
+
+	//Use skill
 	if (!Q_stricmp(gi.argv(1), "skill1"))
 	{
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun")){
@@ -239,11 +244,13 @@ void Cmd_Give_f (edict_t *ent)
 			}
 		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_bfg")){
-			gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
 
 			//gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(cldn_wleap));
 
-			if (level.time> cldn_wleap + 6) {
+			if (level.time> cldn_wleap + 6) 
+			{
+				gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
+
 				cldn_wleap = level.time;
 				AngleVectors(ent->client->v_angle, forward, NULL, up);
 				VectorScale(up, 1000, ent->velocity);
@@ -359,7 +366,7 @@ void Cmd_Give_f (edict_t *ent)
 		it = FindItem (name);
 		if (!it)
 		{
-			gi.cprintf (ent, PRINT_HIGH, "unknown item\n");
+			//gi.cprintf (ent, PRINT_HIGH, "unknown item\n");
 			return;
 		}
 	}
@@ -577,9 +584,14 @@ void Cmd_Inven_f (edict_t *ent)
 	cl->showinventory = true;
 
 	gi.WriteByte (svc_inventory);
+	//gi.WriteShort(cl->pers.hero);
+	//gi.WriteString("anan");
+
 	for (i=0 ; i<MAX_ITEMS ; i++)
 	{
 		gi.WriteShort (cl->pers.inventory[i]);
+		//if (!strcmp(cl->pers.weapon, "blaster")){
+		//}
 	}
 	gi.unicast (ent, true);
 }

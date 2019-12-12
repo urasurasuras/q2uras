@@ -81,7 +81,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Quake 2\MyMod</OutDir>
+    <OutDir>G:\SteamLibrary\steamapps\common\Quake 2\myMod</OutDir>
     <IntDir>.\release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>gamex86</TargetName>

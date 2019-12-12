@@ -890,8 +890,8 @@ void Weapon_Blaster (edict_t *ent)
 	static int	fire_frames[]	= {5, 0};
 
 	ent->client->pers.hero = "McCree";
-	gi.bprintf(PRINT_MEDIUM, ent->client->pers.hero);
-
+	
+		
 	Weapon_Generic (ent, 4, 7, 52, 55, pause_frames, fire_frames, Weapon_Blaster_Fire);
 }
 
@@ -1397,8 +1397,8 @@ void weapon_railgun_fire (edict_t *ent)
 	ent->client->ps.gunframe++;
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
-	if (! ( (int)dmflags->value & DF_INFINITE_AMMO ) )
-		ent->client->pers.inventory[ent->client->ammo_index]--;
+	//if (! ( (int)dmflags->value & DF_INFINITE_AMMO ) )
+		//ent->client->pers.inventory[ent->client->ammo_index]--;
 }
 
 
@@ -1534,7 +1534,7 @@ void weapon_tesla_fire(edict_t *ent)
 	PlayerNoise(ent, start, PNOISE_WEAPON);
 
 	if (!((int)dmflags->value & DF_INFINITE_AMMO))
-		ent->client->pers.inventory[ent->client->ammo_index] -= 50;
+		ent->client->pers.inventory[ent->client->ammo_index] -= 1;
 }
 
 
