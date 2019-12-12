@@ -173,8 +173,7 @@ void Cmd_Give_f (edict_t *ent)
 
 	//gamemode
 	//cooldown
-	static float cldn_wleap,cldn_mcroll,cldn_flash,cldn_scatter;
-	static float _wleap=6,_mcroll=6,_flash=10,_scatter=10;
+	
 
 	//vec for player
 	vec3_t	forward, right,up;
@@ -193,7 +192,7 @@ void Cmd_Give_f (edict_t *ent)
 		gi.bprintf(PRINT_MEDIUM,"Current hero: %s\n", ent->client->pers.hero);
 	}
 
-	//Use skill
+	//Use skill E
 	if (!Q_stricmp(gi.argv(1), "skill1"))
 	{
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun")){
@@ -233,10 +232,12 @@ void Cmd_Give_f (edict_t *ent)
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash-(level.time-cldn_flash)));
 		}
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
-			gi.bprintf(PRINT_MEDIUM, "Used blink! \n");
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_machinegun"))
+			gi.bprintf(PRINT_MEDIUM, "Used recall! \n");
 		return;
 	}
+
+	//Use skill SHIFT
 	else if (!Q_stricmp(gi.argv(1), "skill2"))
 	{
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun"))
@@ -267,6 +268,14 @@ void Cmd_Give_f (edict_t *ent)
 			}
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Leap on cooldown: %.1f\n", (_wleap-(level.time - cldn_wleap)));
+		}
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_machinegun")){
+			if (ent->client->pers.num_blinks > 0 && ent->client->pers.num_blinks <= 3){
+				gi.bprintf(PRINT_MEDIUM, "Used blink! %d\n", ent->client->pers.num_blinks);
+				AngleVectors(ent->client->v_angle, forward, NULL, up);
+				VectorScale(forward, 500, ent->velocity);
+				ent->client->pers.num_blinks--;
+			}
 		}
 		return;
 	}

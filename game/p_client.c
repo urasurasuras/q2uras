@@ -1578,6 +1578,18 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	level.current_entity = ent;
 	client = ent->client;
 
+	//blink
+	//gi.bprintf(PRINT_MEDIUM, "number of blinks! %d\n", ent->client->pers.num_blinks);
+
+	if ((ent->client->pers.num_blinks < 3 && ent->client->pers.num_blinks >= 0) && (level.time> cldn_blink + _blink)){
+		cldn_blink = level.time;
+		ent->client->pers.num_blinks++;
+		gi.bprintf(PRINT_MEDIUM, "Blink added! %d\n", ent->client->pers.num_blinks);
+		gi.bprintf(PRINT_MEDIUM, "Blink on cooldown! %d\n", (_blink - (level.time - cldn_blink)));
+
+	}
+	//gi.bprintf(PRINT_MEDIUM, "thinking...\n", num_blinks);
+
 	if (level.intermissiontime)
 	{
 		client->ps.pmove.pm_type = PM_FREEZE;
