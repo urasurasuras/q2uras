@@ -271,6 +271,22 @@ void Cmd_Give_f (edict_t *ent)
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Leap on cooldown: %.1f\n", (_wleap-(level.time - cldn_wleap)));
 		}
+		if (!Q_stricmp((ent->client->pers.hero), "Pharah")){
+
+			//gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(cldn_wleap));
+
+			if (level.time> cldn_rjump + _rjump) 
+			{
+				gi.bprintf(PRINT_MEDIUM, "Used rocket boost!\n");
+
+				cldn_rjump = level.time;
+				AngleVectors(ent->client->v_angle, NULL, NULL, up);
+				VectorScale(up, 1000, ent->velocity);
+				//VectorScale(forward, 1000, ent->velocity);
+			}
+			else 
+				gi.bprintf(PRINT_MEDIUM, "Rocket boost on cooldown: %.1f\n", (_wleap-(level.time - cldn_wleap)));
+		}
 		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
 			if (ent->client->pers.num_blinks > 0 && ent->client->pers.num_blinks <= 3){
 				gi.bprintf(PRINT_MEDIUM, "Used blink! %d\n", ent->client->pers.num_blinks);
