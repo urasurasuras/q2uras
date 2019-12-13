@@ -1596,24 +1596,24 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 	//KEEP TRACK OF BLINK RECHARGES
 	//gi.bprintf(PRINT_MEDIUM, "number of blinks! %d\n", ent->client->pers.num_blinks);
-	if(ent->client->pers.hero=="Tracer")
-	if (level.time > cldn_blink + _blink){
-		//KEEP TRACK OF RECALL TIME
-		
-		//AngleVectors(ent->client->v_angle, forward, right, NULL);
-		//VectorSet(offset, 24, 8, ent->viewheight - 8);
-		//P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, pos_cache);		
-		gi.bprintf(PRINT_MEDIUM, "set recall pos! %d\n", (_blink - (level.time - cldn_blink)));
+	if (!Q_stricmp(ent->client->pers.hero, "Tracer")) {
+		if (level.time > cldn_blink + _blink) {
+			//KEEP TRACK OF RECALL TIME
 
-		VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
-		cldn_blink = level.time;
+			//AngleVectors(ent->client->v_angle, forward, right, NULL);
+			//VectorSet(offset, 24, 8, ent->viewheight - 8);
+			//P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, pos_cache);		
+			gi.bprintf(PRINT_MEDIUM, "set recall pos! %d\n", (_blink - (level.time - cldn_blink)));
 
-		if (ent->client->pers.num_blinks < 3 && ent->client->pers.num_blinks >= 0) {
-			ent->client->pers.num_blinks++;
-			gi.bprintf(PRINT_MEDIUM, "Blink added! %d\n", ent->client->pers.num_blinks);
+			VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
+			cldn_blink = level.time;
+
+			if (ent->client->pers.num_blinks < 3 && ent->client->pers.num_blinks >= 0) {
+				ent->client->pers.num_blinks++;
+				gi.bprintf(PRINT_MEDIUM, "Blink added! %d\n", ent->client->pers.num_blinks);
+			}
 		}
 	}
-	
 	//gi.bprintf(PRINT_MEDIUM, "thinking...\n", num_blinks);
 
 	if (level.intermissiontime)
