@@ -1614,8 +1614,12 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			}
 		}
 	}
-	//gi.bprintf(PRINT_MEDIUM, "thinking...\n", num_blinks);
-
+	if (!Q_stricmp(ent->client->pers.hero, "Pharah")) {
+		if (ent->client->pers.booster_fuel < 1000 && ent->client->pers.booster_fuel >= 0) {
+			ent->client->pers.booster_fuel++;
+		}
+		//gi.bprintf(PRINT_MEDIUM, "thinking...\n", num_blinks);
+	}
 	if (level.intermissiontime)
 	{
 		client->ps.pmove.pm_type = PM_FREEZE;

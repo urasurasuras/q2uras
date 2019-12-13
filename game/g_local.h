@@ -866,8 +866,13 @@ typedef struct
 	int			helpchanged;
 
 	char		*hero;
+
+	//tracer
 	int			num_blinks;
 	vec3_t		pos_to_recall;
+
+	//pharah
+	float		booster_fuel;
 
 	qboolean	spectator;			// client is a spectator
 } client_persistant_t;

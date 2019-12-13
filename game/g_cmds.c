@@ -213,7 +213,14 @@ void Cmd_Give_f (edict_t *ent)
 			else
 				gi.bprintf(PRINT_MEDIUM, "Scatter arrow on cooldown: %.1f\n", (_scatter-(level.time - cldn_scatter)));
 		}
+		if (!Q_stricmp((ent->client->pers.hero), "Pharah") && ent->client->pers.booster_fuel>=6) {
 
+			gi.bprintf(PRINT_MEDIUM, "boosted a lil\n");
+
+			AngleVectors(ent->client->v_angle, NULL, NULL, up);
+			VectorScale(up, 100, ent->velocity);
+			ent->client->pers.booster_fuel -= 50;
+		}
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "McCree")){
 			//gi.bprintf(PRINT_MEDIUM, "%f\n",dmflags->value);
 			//gi.bprintf(PRINT_MEDIUM, "%f\n",sv_cheats	->value);
@@ -228,6 +235,7 @@ void Cmd_Give_f (edict_t *ent)
 				VectorScale(forward, -2, ent->client->kick_origin);
 				ent->client->kick_angles[0] = -1;
 				fire_flashbang(ent, ent->s.origin, forward, 0, 2500, 1);
+				gi.bprintf(PRINT_HIGH, "Used flashbang!\n");
 			}
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash-(level.time-cldn_flash)));
@@ -1158,7 +1166,7 @@ void ClientCommand (edict_t *ent)
 		Cmd_Wave_f (ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
-
+	
 	/*else if (Q_stricmp(cmd, "skill") == 0){
 		SetHero(ent);
 	}*/
