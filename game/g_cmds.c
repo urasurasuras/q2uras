@@ -195,7 +195,7 @@ void Cmd_Give_f (edict_t *ent)
 	//Use skill E
 	if (!Q_stricmp(gi.argv(1), "skill1"))
 	{
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun")){
+		if (!Q_stricmp((ent->client->pers.hero), "Hanzo")){
 
 			if (level.time > cldn_scatter + _scatter) {
 				gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
@@ -214,7 +214,7 @@ void Cmd_Give_f (edict_t *ent)
 				gi.bprintf(PRINT_MEDIUM, "Scatter arrow on cooldown: %.1f\n", (_scatter-(level.time - cldn_scatter)));
 		}
 
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
+		if (!Q_stricmp((ent->client->pers.weapon->classname), "McCree")){
 			//gi.bprintf(PRINT_MEDIUM, "%f\n",dmflags->value);
 			//gi.bprintf(PRINT_MEDIUM, "%f\n",sv_cheats	->value);
 			
@@ -232,7 +232,7 @@ void Cmd_Give_f (edict_t *ent)
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash-(level.time-cldn_flash)));
 		}
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_machinegun")){
+		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
 			gi.bprintf(PRINT_MEDIUM, "Used recall! \n");
 			VectorCopy(ent->client->pers.pos_to_recall, ent->s.origin);
 		}
@@ -243,8 +243,8 @@ void Cmd_Give_f (edict_t *ent)
 	else if (!Q_stricmp(gi.argv(1), "skill2"))
 	{
 		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun"))
-			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster")){
+			//gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
+		if (!Q_stricmp((ent->client->pers.hero), "McCree")){
 			if (level.time > cldn_mcroll + _mcroll) {
 				gi.bprintf(PRINT_MEDIUM, "Used roll!\n");
 				cldn_mcroll = level.time;
@@ -255,7 +255,7 @@ void Cmd_Give_f (edict_t *ent)
 			else
 				gi.bprintf(PRINT_MEDIUM, "Combat roll on cooldown: %.1f\n", (_mcroll - (level.time - cldn_mcroll)));
 		}
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_bfg")){
+		if (!Q_stricmp((ent->client->pers.hero), "Winston")){
 
 			//gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(cldn_wleap));
 
@@ -271,7 +271,7 @@ void Cmd_Give_f (edict_t *ent)
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Leap on cooldown: %.1f\n", (_wleap-(level.time - cldn_wleap)));
 		}
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_machinegun")){
+		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
 			if (ent->client->pers.num_blinks > 0 && ent->client->pers.num_blinks <= 3){
 				gi.bprintf(PRINT_MEDIUM, "Used blink! %d\n", ent->client->pers.num_blinks);
 				AngleVectors(ent->client->v_angle, forward, NULL, up);
