@@ -867,11 +867,22 @@ typedef struct
 
 	char		*hero;
 
+	//mccree
+	float		cldn_mcroll, cldn_flash;
+
+	//winston
+	float		cldn_wleap;
+
+	//hanzo
+	float		cldn_scatter;
 	//tracer
+	float		cldn_blink;
+	float		cldn_recall;
 	int			num_blinks;
 	vec3_t		pos_to_recall;
 
 	//pharah
+	float		cldn_rjump;
 	float		booster_fuel;
 
 	qboolean	spectator;			// client is a spectator

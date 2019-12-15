@@ -1593,20 +1593,21 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 	level.current_entity = ent;
 	client = ent->client;
+	client_persistant_t persist = client->pers;
 
 	//KEEP TRACK OF BLINK RECHARGES
 	//gi.bprintf(PRINT_MEDIUM, "number of blinks! %d\n", ent->client->pers.num_blinks);
-	if (!Q_stricmp(ent->client->pers.hero, "Tracer")) {
-		if (level.time > cldn_blink + _blink) {
+	if (!Q_stricmp(persist.hero, "Tracer")) {
+		if (level.time > persist.cldn_blink + _blink) {
 			//KEEP TRACK OF RECALL TIME
 
 			//AngleVectors(ent->client->v_angle, forward, right, NULL);
 			//VectorSet(offset, 24, 8, ent->viewheight - 8);
 			//P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, pos_cache);		
-			gi.bprintf(PRINT_MEDIUM, "set recall pos! %d\n", (_blink - (level.time - cldn_blink)));
+			gi.bprintf(PRINT_MEDIUM, "set recall pos! %d\n", (_blink - (level.time - persist.cldn_blink)));
 
 			VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
-			cldn_blink = level.time;
+			persist.cldn_blink = level.time;
 
 			if (ent->client->pers.num_blinks < 3 && ent->client->pers.num_blinks >= 0) {
 				ent->client->pers.num_blinks++;
