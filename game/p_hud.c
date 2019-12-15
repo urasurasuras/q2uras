@@ -321,8 +321,8 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero     leap				\" "
-			"xv 50 yv 172 string2 \"%s		%.0f/%.0f			\" ",
+			"xv 50 yv 164 string2 \" Hero		Leap				\" "
+			"xv 50 yv 172 string2 \"%s			%.0f/%.0f			\" ",
 			"medium",
 			level.level_name,
 			game.helpmessage1,
@@ -339,8 +339,8 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero     Scatter			\" "
-			"xv 50 yv 172 string2 \"%s		 %.0f/%.0f			\" ",
+			"xv 50 yv 164 string2 \" Hero		Scatter			\" "
+			"xv 50 yv 172 string2 \"%s			%.0f/%.0f			\" ",
 			"medium",
 			level.level_name,
 			game.helpmessage1,
@@ -356,7 +356,7 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero     Rocket Boost		Fuel\" "
+			"xv 50 yv 164 string2 \" Hero		Rckt. Boost		Fuel\" "
 			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f\" ",
 			"medium",
 			level.level_name,
@@ -373,7 +373,7 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero     Combat Roll		Flashbang\" "
+			"xv 50 yv 164 string2 \" Hero		Roll		Flash\" "
 			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f/%0.f\" ",
 			"medium",
 			level.level_name,
@@ -391,14 +391,14 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero     Blink Charges		Recall\" "
-			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f/%.0f\" ",
+			"xv 50 yv 164 string2 \" Hero		Blinks		Recall\" "
+			"xv 50 yv 172 string2 \"%s			%d/3		%.0f/%.0f\" ",
 			"medium",
 			level.level_name,
 			game.helpmessage1,
 			game.helpmessage2,
 			persist.hero,
-			(persist.num_blinks), 3,
+			(persist.num_blinks),
 			(level.time - persist.cldn_recall), _recall
 			);
 	}
