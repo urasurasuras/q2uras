@@ -197,10 +197,10 @@ void Cmd_Give_f (edict_t *ent)
 	{
 		if (!Q_stricmp((ent->client->pers.hero), "Hanzo")){
 
-			if (level.time > cldn_scatter + _scatter) {
+			if (level.time > ent->client->pers.cldn_scatter + _scatter) {
 				gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
 
-				cldn_scatter = level.time;
+				ent->client->pers.cldn_scatter = level.time;
 				AngleVectors(ent->client->v_angle, forward, right, NULL);
 				VectorSet(offset, 24, 8, ent->viewheight - 8);
 				//VectorAdd(offset, NULL, offset);
@@ -211,7 +211,7 @@ void Cmd_Give_f (edict_t *ent)
 				fire_scatter(ent, start, forward, 10, 1000, EF_BLASTER, 0);
 			}
 			else
-				gi.bprintf(PRINT_MEDIUM, "Scatter arrow on cooldown: %.1f\n", (_scatter-(level.time - cldn_scatter)));
+				gi.bprintf(PRINT_MEDIUM, "Scatter arrow on cooldown: %.1f\n", (_scatter - (level.time - ent->client->pers.cldn_scatter)));
 		}
 		if (!Q_stricmp((ent->client->pers.hero), "Pharah") && ent->client->pers.booster_fuel>=6) {
 
@@ -221,12 +221,12 @@ void Cmd_Give_f (edict_t *ent)
 			VectorScale(up, 100, ent->velocity);
 			ent->client->pers.booster_fuel -= 50;
 		}
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "McCree")){
+		if (!Q_stricmp((ent->client->pers.hero), "McCree")){
 			//gi.bprintf(PRINT_MEDIUM, "%f\n",dmflags->value);
 			//gi.bprintf(PRINT_MEDIUM, "%f\n",sv_cheats	->value);
 			
-			if (level.time > cldn_flash + _flash) {
-				cldn_flash = level.time;
+			if (level.time > ent->client->pers.cldn_flash + _flash) {
+				ent->client->pers.cldn_flash = level.time;
 				AngleVectors(ent->client->v_angle, forward, right, NULL);
 				VectorSet(offset, 24, 8, ent->viewheight - 8);
 				//VectorAdd(offset, NULL, offset);
@@ -238,11 +238,14 @@ void Cmd_Give_f (edict_t *ent)
 				gi.bprintf(PRINT_HIGH, "Used flashbang!\n");
 			}
 			else 
-				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash-(level.time-cldn_flash)));
+				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash - (level.time - ent->client->pers.cldn_flash)));
 		}
 		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
-			gi.bprintf(PRINT_MEDIUM, "Used recall! \n");
-			VectorCopy(ent->client->pers.pos_to_recall, ent->s.origin);
+			if (level.time > ent->client->pers.cldn_recall + _recall) {
+
+				gi.bprintf(PRINT_MEDIUM, "Used recall! \n");
+				VectorCopy(ent->client->pers.pos_to_recall, ent->s.origin);
+			}
 		}
 		return;
 	}
@@ -250,50 +253,48 @@ void Cmd_Give_f (edict_t *ent)
 	//Use skill SHIFT
 	else if (!Q_stricmp(gi.argv(1), "skill2"))
 	{
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_railgun"))
-			//gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
 		if (!Q_stricmp((ent->client->pers.hero), "McCree")){
-			if (level.time > cldn_mcroll + _mcroll) {
+			if (level.time > ent->client->pers.cldn_mcroll + _mcroll) {
 				gi.bprintf(PRINT_MEDIUM, "Used roll!\n");
-				cldn_mcroll = level.time;
+				ent->client->pers.cldn_mcroll = level.time;
 				AngleVectors(ent->client->v_angle, forward, NULL, up);
 				//VectorScale(up, 1000, ent->velocity);
 				VectorScale(forward, 500, ent->velocity);
 			}
 			else
-				gi.bprintf(PRINT_MEDIUM, "Combat roll on cooldown: %.1f\n", (_mcroll - (level.time - cldn_mcroll)));
+				gi.bprintf(PRINT_MEDIUM, "Combat roll on cooldown: %.1f\n", (_mcroll - (level.time - ent->client->pers.cldn_mcroll)));
 		}
 		if (!Q_stricmp((ent->client->pers.hero), "Winston")){
 
 			//gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(cldn_wleap));
 
-			if (level.time> cldn_wleap + _wleap) 
+			if (level.time> ent->client->pers.cldn_wleap + _wleap)
 			{
 				gi.bprintf(PRINT_MEDIUM, "Used leap!\n");
 
-				cldn_wleap = level.time;
+				ent->client->pers.cldn_wleap = level.time;
 				AngleVectors(ent->client->v_angle, forward, NULL, up);
 				VectorScale(up, 1000, ent->velocity);
 				VectorScale(forward, 1000, ent->velocity);
 			}
 			else 
-				gi.bprintf(PRINT_MEDIUM, "Leap on cooldown: %.1f\n", (_wleap-(level.time - cldn_wleap)));
+				gi.bprintf(PRINT_MEDIUM, "Leap on cooldown: %.1f\n", (_wleap - (level.time - ent->client->pers.cldn_wleap)));
 		}
 		if (!Q_stricmp((ent->client->pers.hero), "Pharah")){
 
 			//gi.bprintf(PRINT_MEDIUM, "Timesince %f\n",(cldn_wleap));
 
-			if (level.time> cldn_rjump + _rjump) 
+			if (level.time> ent->client->pers.cldn_rjump + _rjump)
 			{
 				gi.bprintf(PRINT_MEDIUM, "Used rocket boost!\n");
 
-				cldn_rjump = level.time;
+				ent->client->pers.cldn_rjump = level.time;
 				AngleVectors(ent->client->v_angle, NULL, NULL, up);
 				VectorScale(up, 1000, ent->velocity);
 				//VectorScale(forward, 1000, ent->velocity);
 			}
 			else 
-				gi.bprintf(PRINT_MEDIUM, "Rocket boost on cooldown: %.1f\n", (_wleap-(level.time - cldn_wleap)));
+				gi.bprintf(PRINT_MEDIUM, "Rocket boost on cooldown: %.1f\n", (_rjump - (level.time - ent->client->pers.cldn_rjump)));
 		}
 		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
 			if (ent->client->pers.num_blinks > 0 && ent->client->pers.num_blinks <= 3){
@@ -636,6 +637,8 @@ void Cmd_Inven_f (edict_t *ent)
 	for (i=0 ; i<MAX_ITEMS ; i++)
 	{
 		gi.WriteShort (cl->pers.inventory[i]);
+		//gi.WriteShort(cl->pers.hero);
+
 		//if (!strcmp(cl->pers.weapon, "blaster")){
 		//}
 	}

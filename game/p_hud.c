@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #include "g_local.h"
-
+#include "gamemode.h"
 
 
 /*
@@ -303,6 +303,7 @@ void HelpComputer (edict_t *ent)
 {
 	char	string[1024];
 	char	*sk;
+	client_persistant_t persist=ent->client->pers;
 
 	if (skill->value == 0)
 		sk = "easy";
@@ -312,23 +313,96 @@ void HelpComputer (edict_t *ent)
 		sk = "hard";
 	else
 		sk = "hard+";
-
-	// send the layout
-	Com_sprintf (string, sizeof(string),
-		"xv 32 yv 8 picn help "			// background
-		"xv 202 yv 12 string2 \"%s\" "		// skill
-		"xv 0 yv 24 cstring2 \"%s\" "		// level name
-		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
-		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-		"xv 50 yv 164 string2 \" kills     goals    secrets\" "
-		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ", 
-		sk,
-		level.level_name,
-		game.helpmessage1,
-		game.helpmessage2,
-		level.killed_monsters, level.total_monsters, 
-		level.found_goals, level.total_goals,
-		level.found_secrets, level.total_secrets);
+	if (!Q_stricmp((persist.hero), "Winston")){
+		// send the layout
+		Com_sprintf(string, sizeof(string),
+			"xv 32 yv 8 picn help "			// background
+			"xv 202 yv 12 string2 \"%s\" "		// skill
+			"xv 0 yv 24 cstring2 \"%s\" "		// level name
+			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+			"xv 50 yv 164 string2 \" Hero     leap				\" "
+			"xv 50 yv 172 string2 \"%s		%.0f/%.0f			\" ",
+			"medium",
+			level.level_name,
+			game.helpmessage1,
+			game.helpmessage2,
+			persist.hero,
+			(level.time-persist.cldn_wleap), _wleap
+			);
+	}
+	if (!Q_stricmp((persist.hero), "Hanzo")){
+		// send the layout
+		Com_sprintf(string, sizeof(string),
+			"xv 32 yv 8 picn help "			// background
+			"xv 202 yv 12 string2 \"%s\" "		// skill
+			"xv 0 yv 24 cstring2 \"%s\" "		// level name
+			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+			"xv 50 yv 164 string2 \" Hero     Scatter			\" "
+			"xv 50 yv 172 string2 \"%s		 %.0f/%.0f			\" ",
+			"medium",
+			level.level_name,
+			game.helpmessage1,
+			game.helpmessage2,
+			persist.hero,
+			(level.time - persist.cldn_scatter), _scatter
+			);
+	}
+	if (!Q_stricmp((persist.hero), "Pharah")) {
+		Com_sprintf(string, sizeof(string),
+			"xv 32 yv 8 picn help "			// background
+			"xv 202 yv 12 string2 \"%s\" "		// skill
+			"xv 0 yv 24 cstring2 \"%s\" "		// level name
+			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+			"xv 50 yv 164 string2 \" Hero     Rocket Boost		Fuel\" "
+			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f\" ",
+			"medium",
+			level.level_name,
+			game.helpmessage1,
+			game.helpmessage2,
+			persist.hero,
+			(level.time - persist.cldn_rjump), _rjump, persist.booster_fuel
+			);
+	}
+	if (!Q_stricmp((persist.hero), "McCree")){
+		Com_sprintf(string, sizeof(string),
+			"xv 32 yv 8 picn help "			// background
+			"xv 202 yv 12 string2 \"%s\" "		// skill
+			"xv 0 yv 24 cstring2 \"%s\" "		// level name
+			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+			"xv 50 yv 164 string2 \" Hero     Combat Roll		Flashbang\" "
+			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f/%0.f\" ",
+			"medium",
+			level.level_name,
+			game.helpmessage1,
+			game.helpmessage2,
+			persist.hero,
+			(level.time - persist.cldn_mcroll), _mcroll,
+			(level.time - persist.cldn_flash ), _flash
+			);
+	}
+	if (!Q_stricmp((persist.hero), "Tracer")){
+		Com_sprintf(string, sizeof(string),
+			"xv 32 yv 8 picn help "			// background
+			"xv 202 yv 12 string2 \"%s\" "		// skill
+			"xv 0 yv 24 cstring2 \"%s\" "		// level name
+			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+			"xv 50 yv 164 string2 \" Hero     Blink Charges		Recall\" "
+			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f/%.0f\" ",
+			"medium",
+			level.level_name,
+			game.helpmessage1,
+			game.helpmessage2,
+			persist.hero,
+			(persist.num_blinks), 3,
+			(level.time - persist.cldn_recall), _recall
+			);
+	}
+	
 
 	gi.WriteByte (svc_layout);
 	gi.WriteString (string);
@@ -346,11 +420,11 @@ Display the current help message
 void Cmd_Help_f (edict_t *ent)
 {
 	// this is for backwards compatability
-	if (deathmatch->value)
+	/*if (deathmatch->value)
 	{
 		Cmd_Score_f (ent);
 		return;
-	}
+	}*/
 
 	ent->client->showinventory = false;
 	ent->client->showscores = false;
