@@ -1604,7 +1604,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			//AngleVectors(ent->client->v_angle, forward, right, NULL);
 			//VectorSet(offset, 24, 8, ent->viewheight - 8);
 			//P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, pos_cache);		
-			gi.bprintf(PRINT_MEDIUM, "set recall pos! %d\n", (_blink - (level.time - persist.cldn_blink)));
+			//gi.bprintf(PRINT_MEDIUM, "set recall pos! %d\n", (_blink - (level.time - persist.cldn_blink)));
 
 			VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
 			persist.cldn_blink = level.time;

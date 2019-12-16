@@ -189,7 +189,20 @@ void Cmd_Give_f (edict_t *ent)
 
 	//Give hero
 	if (!Q_stricmp(gi.argv(1), "hero")){
-		gi.bprintf(PRINT_MEDIUM,"Current hero: %s\n", ent->client->pers.hero);
+		ent->client->pers.inventory[10] = 1;	//tracer
+		ent->client->pers.inventory[14] = 1;	//pharah
+		ent->client->pers.inventory[16] += 1;	//hanzo
+		ent->client->pers.inventory[17] = 1;	//winston
+
+		for (i = 0; i<game.num_items; i++)
+		{
+			it = itemlist + i;
+			if (!it->pickup)
+				continue;
+			if (!(it->flags & IT_AMMO))
+				continue;
+			Add_Ammo(ent, it, 1000);
+		}
 	}
 
 	//Use skill E
@@ -241,11 +254,11 @@ void Cmd_Give_f (edict_t *ent)
 				gi.bprintf(PRINT_MEDIUM, "Flash on cooldown: %.1f\n", (_flash - (level.time - ent->client->pers.cldn_flash)));
 		}
 		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
-			if (level.time > ent->client->pers.cldn_recall + _recall) {
+			//if (level.time > ent->client->pers.cldn_recall + _recall) {
 
 				gi.bprintf(PRINT_MEDIUM, "Used recall! \n");
 				VectorCopy(ent->client->pers.pos_to_recall, ent->s.origin);
-			}
+			//}
 		}
 		return;
 	}
@@ -300,7 +313,7 @@ void Cmd_Give_f (edict_t *ent)
 			if (ent->client->pers.num_blinks > 0 && ent->client->pers.num_blinks <= 3){
 				gi.bprintf(PRINT_MEDIUM, "Used blink! %d\n", ent->client->pers.num_blinks);
 				AngleVectors(ent->client->v_angle, forward, NULL, up);
-				VectorScale(forward, 500, ent->velocity);
+				VectorScale(forward, 1000, ent->velocity);
 				ent->client->pers.num_blinks--;
 			}
 		}
