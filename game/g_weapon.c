@@ -1106,7 +1106,7 @@ void flashbang_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t 
 	// core explosion - prevents firing it into the wall/floor
 	if (other->takedamage)
 		T_Damage(other, self, self->owner, self->velocity, self->s.origin, plane->normal, 5, 5000, 0, MOD_BFG_BLAST);
-	T_RadiusDamage(self, self->owner, 50, other, 100, MOD_SLIME);
+	T_RadiusDamage(self, self->owner, 50, other, 100, MOD_BFG_BLAST);
 
 	gi.sound(self, CHAN_VOICE, gi.soundindex("weapons/bfg__x1b.wav"), 1, ATTN_NORM, 0);
 	self->solid = SOLID_NOT;
@@ -1205,6 +1205,90 @@ void bfg_think (edict_t *self)
 	self->nextthink = level.time + FRAMETIME;
 }
 
+//TESLA THINK
+void tesla_think(edict_t *self)
+{
+	edict_t	*ent;
+	edict_t	*ignore;
+	vec3_t	point;
+	vec3_t	dir;
+	vec3_t	start;
+	vec3_t	end;
+	int		dmg;
+	trace_t	tr;
+
+	//
+	float timetodie = 0.2;
+	float timecache;
+
+	if (deathmatch->value)
+		dmg = 5;
+	else
+		dmg = 10;
+
+	ent = NULL;
+	while ((ent = findradius(ent, self->s.origin, 256)) != NULL)
+	{
+		if (ent == self)
+			continue;
+
+		if (ent == self->owner)
+			continue;
+
+		if (!ent->takedamage)
+			continue;
+
+		if (!(ent->svflags & SVF_MONSTER) && (!ent->client) && (strcmp(ent->classname, "misc_explobox") != 0))
+			continue;
+
+		VectorMA(ent->absmin, 0.5, ent->size, point);
+
+		VectorSubtract(point, self->s.origin, dir);
+		VectorNormalize(dir);
+
+		ignore = self;
+		VectorCopy(self->s.origin, start);
+		VectorMA(start, 2048, dir, end);
+		while (1)
+		{
+			tr = gi.trace(start, NULL, NULL, end, ignore, CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_DEADMONSTER);
+
+			if (!tr.ent)
+				break;
+
+			// hurt it if we can
+			if ((tr.ent->takedamage) && !(tr.ent->flags & FL_IMMUNE_LASER) && (tr.ent != self->owner))
+				T_Damage(tr.ent, self, self->owner, dir, tr.endpos, vec3_origin, dmg, 1, DAMAGE_ENERGY, MOD_BFG_LASER);
+
+			// if we hit something that's not a monster or player we're done
+			if (!(tr.ent->svflags & SVF_MONSTER) && (!tr.ent->client))
+			{
+				gi.WriteByte(svc_temp_entity);
+				gi.WriteByte(TE_LASER_SPARKS);
+				gi.WriteByte(4);
+				gi.WritePosition(tr.endpos);
+				gi.WriteDir(tr.plane.normal);
+				gi.WriteByte(self->s.skinnum);
+				gi.multicast(tr.endpos, MULTICAST_PVS);
+				break;
+			}
+
+			ignore = tr.ent;
+			VectorCopy(tr.endpos, start);
+		}
+
+		gi.WriteByte(svc_temp_entity);
+		gi.WriteByte(TE_BFG_LASER);
+		gi.WritePosition(self->s.origin);
+		gi.WritePosition(tr.endpos);
+		gi.multicast(self->s.origin, MULTICAST_PHS);
+	}
+	timecache = level.time;
+	G_FreeEdict(self);
+
+	self->nextthink = level.time + 0.01;
+
+}
 
 //FLASHBANG THINK
 void flashbang_think(edict_t *self)
@@ -1279,14 +1363,14 @@ void fire_tesla(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, 
 	bfg->s.modelindex = gi.modelindex("sprites/s_bfg1.sp2");
 	bfg->owner = self;
 	bfg->touch = bfg_touch;
-	bfg->nextthink = level.time + 8000 / speed;
-	bfg->think = G_FreeEdict;
+	//bfg->nextthink = level.time + .2;
+	//bfg->think = flashbang_think;
 	bfg->radius_dmg = damage;
 	bfg->dmg_radius = damage_radius;
 	bfg->classname = "bfg blast";
 	bfg->s.sound = gi.soundindex("weapons/bfg__l1a.wav");
 
-	bfg->think = bfg_think;
+	bfg->think = tesla_think;
 	bfg->nextthink = level.time + FRAMETIME;
 	bfg->teammaster = bfg;
 	bfg->teamchain = NULL;
