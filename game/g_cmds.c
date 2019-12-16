@@ -20,7 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "g_local.h"
 #include "m_player.h"
 #include "gamemode.h"
-int gamemode;
 
 static void P_ProjectSource(gclient_t *client, vec3_t point, vec3_t distance, vec3_t forward, vec3_t right, vec3_t result)
 {
@@ -186,23 +185,15 @@ void Cmd_Give_f (edict_t *ent)
 		gamemode = 1;
 		gi.bprintf(PRINT_MEDIUM, "Game mode set to: Elimination\n");
 	}
+	else if (!Q_stricmp(gi.argv(1), "none")) {
+		gamemode = 0;
+		gi.bprintf(PRINT_MEDIUM, "Game mode set to: none\n");
+	}
 
 	//Give hero
 	if (!Q_stricmp(gi.argv(1), "hero")){
-		ent->client->pers.inventory[10] = 1;	//tracer
-		ent->client->pers.inventory[14] = 1;	//pharah
-		ent->client->pers.inventory[16] += 1;	//hanzo
-		ent->client->pers.inventory[17] = 1;	//winston
-
-		for (i = 0; i<game.num_items; i++)
-		{
-			it = itemlist + i;
-			if (!it->pickup)
-				continue;
-			if (!(it->flags & IT_AMMO))
-				continue;
-			Add_Ammo(ent, it, 1000);
-		}
+		SetHero(ent, it);
+		
 	}
 
 	//Use skill E
@@ -1069,31 +1060,24 @@ void Cmd_PlayerList_f(edict_t *ent)
 }
 
 //give hero
-void SetHero(edict_t *ent){
+void SetHero(edict_t *ent, gitem_t	*it)
+{
+	int i; 
 
-	//Give hero
-	if (!Q_stricmp(gi.argv(1), "1"))
+	ent->client->pers.inventory[10] = 1;	//tracer
+	ent->client->pers.inventory[14] = 1;	//pharah
+	ent->client->pers.inventory[16] = 1;	//hanzo
+	ent->client->pers.inventory[17] = 1;	//winston
+
+	for (i = 0; i<game.num_items; i++)
 	{
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
-			gi.bprintf(PRINT_MEDIUM, "Used scatter arrow!\n");
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
-			gi.bprintf(PRINT_MEDIUM, "Used sonic arrow!\n");
-		return;
+		it = itemlist + i;
+		if (!it->pickup)
+			continue;
+		if (!(it->flags & IT_AMMO))
+			continue;
+		Add_Ammo(ent, it, 1000);
 	}
-	else if (!Q_stricmp(gi.argv(1), "2"))
-	{
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_blaster"))
-			gi.bprintf(PRINT_MEDIUM, "Used blink!\n");
-		if (!Q_stricmp((ent->client->pers.weapon->classname), "weapon_rocketlauncher"))
-			gi.bprintf(PRINT_MEDIUM, "Used recall!\n");
-		return;
-	}
-
-	/*if ((strcmp(ent->client->pers.weapon->classname, "Weapon_RocketLauncher") == 0)){
-	hero = HERO_1;
-	gi.bprintf(PRINT_MEDIUM, hero);
-	}*/
-
 }
 /*
 =================
