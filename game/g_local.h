@@ -736,6 +736,22 @@ void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
 //ARROWS
 void fire_scattered(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper);
+//SCATTER ARROW
+void fire_scatter(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper);
+//SCATTERED TOUCH
+void scattered_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf);
+//SCATTER TOUCH
+void scatter_touch(edict_t *self, edict_t *other, cplane_t *plane, csurface_t *surf);
+//ARROW
+void fire_arrow(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper);
+//FLASHBANG THINK
+void flashbang_think(edict_t *self);
+//FIRE TESLA CANON
+void fire_tesla(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
+//FIRE FLASHBANG
+void fire_flashbang(edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
+
+
 
 
 //
