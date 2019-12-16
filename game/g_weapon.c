@@ -1407,7 +1407,7 @@ void fire_flashbang(edict_t *self, vec3_t start, vec3_t dir, int damage, int spe
 	bfg->s.sound = gi.soundindex("weapons/bfg__l1a.wav");
 
 	bfg->think = flashbang_think;
-	bfg->nextthink = level.time + .5;
+	bfg->nextthink = level.time + .3;
 	bfg->teammaster = bfg;
 	bfg->teamchain = NULL;
 

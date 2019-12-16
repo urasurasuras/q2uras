@@ -1801,8 +1801,6 @@ void ClientBeginServerFrame (edict_t *ent)
 	gclient_t	*client;
 	int			buttonMask;
 
-	extern int gamemode;	//gamemode
-
 	if (level.intermissiontime)
 		return;
 
@@ -1831,10 +1829,14 @@ void ClientBeginServerFrame (edict_t *ent)
 				buttonMask = BUTTON_ATTACK;
 			else
 				buttonMask = -1;
-			if ( gamemode = 1 && deathmatch->value) {
+			/*if ( gamemode = 1 && deathmatch->value) {
 				gi.bprintf(PRINT_HIGH, "Wait for next round to respawn...\n");
 				return;
 			}
+			else if (gamemode = 0){
+				respawn(ent);
+				client->latched_buttons = 0;
+			}*/
 			if ( ( client->latched_buttons & buttonMask ) ||
 				(deathmatch->value && ((int)dmflags->value & DF_FORCE_RESPAWN) ) )
 			{
