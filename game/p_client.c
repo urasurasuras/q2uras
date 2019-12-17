@@ -1117,6 +1117,8 @@ void PutClientInServer (edict_t *ent)
 	client_persistant_t	saved;
 	client_respawn_t	resp;
 
+	gitem_t		*it;
+
 	// find a spawn point
 	// do it before setting health back up, so farthest
 	// ranging doesn't count this client
@@ -1133,6 +1135,8 @@ void PutClientInServer (edict_t *ent)
 		resp = client->resp;
 		memcpy (userinfo, client->pers.userinfo, sizeof(userinfo));
 		InitClientPersistant (client);
+		SetHero(ent, it);
+
 		ClientUserinfoChanged (ent, userinfo);
 	}
 	else if (coop->value)
@@ -1600,14 +1604,9 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	if (!Q_stricmp(persist.hero, "Tracer")) {
 		if (level.time > persist.cldn_blink + _blink) {
 			//KEEP TRACK OF RECALL TIME
-
-			//AngleVectors(ent->client->v_angle, forward, right, NULL);
-			//VectorSet(offset, 24, 8, ent->viewheight - 8);
-			//P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, pos_cache);		
-			//gi.bprintf(PRINT_MEDIUM, "set recall pos! %d\n", (_blink - (level.time - persist.cldn_blink)));
-
 			VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
 			persist.cldn_blink = level.time;
+			gi.bprintf(PRINT_HIGH, "Blinks time :%.1f", persist.cldn_blink);
 
 			if (ent->client->pers.num_blinks < 3 && ent->client->pers.num_blinks >= 0) {
 				ent->client->pers.num_blinks++;
@@ -1616,7 +1615,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		}
 	}
 	if (!Q_stricmp(ent->client->pers.hero, "Pharah")) {
-		if (ent->client->pers.booster_fuel < 1000 && ent->client->pers.booster_fuel >= 0) {
+		if (ent->client->pers.booster_fuel < 1000 ) {
 			ent->client->pers.booster_fuel++;
 		}
 		//gi.bprintf(PRINT_MEDIUM, "thinking...\n", num_blinks);
@@ -1829,14 +1828,14 @@ void ClientBeginServerFrame (edict_t *ent)
 				buttonMask = BUTTON_ATTACK;
 			else
 				buttonMask = -1;
-			/*if ( gamemode = 1 && deathmatch->value) {
+			if ( gamemode = 1 && deathmatch->value) {
 				gi.bprintf(PRINT_HIGH, "Wait for next round to respawn...\n");
 				return;
 			}
 			else if (gamemode = 0){
 				respawn(ent);
 				client->latched_buttons = 0;
-			}*/
+			}
 			if ( ( client->latched_buttons & buttonMask ) ||
 				(deathmatch->value && ((int)dmflags->value & DF_FORCE_RESPAWN) ) )
 			{

@@ -1227,7 +1227,7 @@ void tesla_think(edict_t *self)
 		dmg = 10;
 
 	ent = NULL;
-	while ((ent = findradius(ent, self->s.origin, 256)) != NULL)
+	while ((ent = findradius(ent, self->s.origin, 100)) != NULL)
 	{
 		if (ent == self)
 			continue;
@@ -1396,7 +1396,7 @@ void fire_flashbang(edict_t *self, vec3_t start, vec3_t dir, int damage, int spe
 	bfg->s.effects |= EF_COLOR_SHELL | EF_ANIM_ALLFAST;
 	VectorClear(bfg->mins);
 	VectorClear(bfg->maxs);
-	bfg->s.modelindex = gi.modelindex("sprites/s_bfg1.sp2");
+	bfg->s.modelindex = gi.modelindex("sprites/s_flash.sp2");
 	bfg->owner = self;
 	bfg->touch = flashbang_touch;
 	//bfg->nextthink = level.time + 8000 / speed;

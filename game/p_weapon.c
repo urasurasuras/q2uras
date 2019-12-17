@@ -1522,8 +1522,8 @@ void weapon_tesla_fire(edict_t *ent)
 	VectorScale(forward, -2, ent->client->kick_origin);
 
 	// make a big pitch kick with an inverse fall
-	ent->client->v_dmg_pitch = -40;
-	ent->client->v_dmg_roll = crandom() * 8;
+	ent->client->v_dmg_pitch = -1;
+	ent->client->v_dmg_roll = crandom() * 2;
 	ent->client->v_dmg_time = level.time + DAMAGE_TIME;
 
 	VectorSet(offset, 8, 8, ent->viewheight - 8);
