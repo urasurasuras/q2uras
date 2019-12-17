@@ -894,9 +894,9 @@ typedef struct
 	//tracer
 	float		cldn_blink;
 	float		cldn_recall;
-	float			num_blinks;
+	float		num_blinks;
 	vec3_t		pos_to_recall;
-
+	qboolean	set_translocator;
 	//pharah
 	float		cldn_rjump;
 	float		booster_fuel;

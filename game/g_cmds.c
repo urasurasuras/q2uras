@@ -246,9 +246,17 @@ void Cmd_Give_f (edict_t *ent)
 		}
 		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
 			//if (level.time > ent->client->pers.cldn_recall + _recall) {
-
-				gi.bprintf(PRINT_MEDIUM, "Used recall! \n");
+			if (ent->client->pers.set_translocator==false){
+				gi.bprintf(PRINT_MEDIUM, "Deployed translocator! \n");
+				VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
+				ent->client->pers.set_translocator = true;
+			}
+			else if (ent->client->pers.set_translocator==true)
+			{
+				gi.bprintf(PRINT_MEDIUM, "Translocated! \n");
 				VectorCopy(ent->client->pers.pos_to_recall, ent->s.origin);
+				ent->client->pers.set_translocator = false;
+			}
 			//}
 		}
 		return;
