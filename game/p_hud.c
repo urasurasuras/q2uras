@@ -392,7 +392,7 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
 			"xv 50 yv 164 string2 \" Hero		Blinks		Recall\" "
-			"xv 50 yv 172 string2 \"%s			%d/3		%.0f/%.0f\" ",
+			"xv 50 yv 172 string2 \"%s			%.0f/3		%.0f/%.0f\" ",
 			"medium",
 			level.level_name,
 			game.helpmessage1,

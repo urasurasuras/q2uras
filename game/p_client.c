@@ -1606,11 +1606,11 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			//KEEP TRACK OF RECALL TIME
 			VectorCopy(ent->s.origin, ent->client->pers.pos_to_recall);
 			persist.cldn_blink = level.time;
-			gi.bprintf(PRINT_HIGH, "Blinks time :%.1f", persist.cldn_blink);
+			//gi.bprintf(PRINT_HIGH, "Blinks time :%.1f", persist.cldn_blink);
 
-			if (ent->client->pers.num_blinks < 3 && ent->client->pers.num_blinks >= 0) {
-				ent->client->pers.num_blinks++;
-				gi.bprintf(PRINT_MEDIUM, "Blink added! %d\n", ent->client->pers.num_blinks);
+			if (ent->client->pers.num_blinks < 3 ) {
+				ent->client->pers.num_blinks +=0.001;
+				gi.bprintf(PRINT_MEDIUM, "Blink added! %.1f\n", ent->client->pers.num_blinks);
 			}
 		}
 	}

@@ -217,7 +217,7 @@ void Cmd_Give_f (edict_t *ent)
 			else
 				gi.bprintf(PRINT_MEDIUM, "Scatter arrow on cooldown: %.1f\n", (_scatter - (level.time - ent->client->pers.cldn_scatter)));
 		}
-		if (!Q_stricmp((ent->client->pers.hero), "Pharah") && ent->client->pers.booster_fuel>=6) {
+		if (!Q_stricmp((ent->client->pers.hero), "Pharah") && ent->client->pers.booster_fuel>=60) {
 
 			gi.bprintf(PRINT_MEDIUM, "boosted a lil\n");
 
@@ -300,14 +300,12 @@ void Cmd_Give_f (edict_t *ent)
 			else 
 				gi.bprintf(PRINT_MEDIUM, "Rocket boost on cooldown: %.1f\n", (_rjump - (level.time - ent->client->pers.cldn_rjump)));
 		}
-		if (!Q_stricmp((ent->client->pers.hero), "Tracer")){
-			if (ent->client->pers.num_blinks > 0 && ent->client->pers.num_blinks <= 3){
-				gi.bprintf(PRINT_MEDIUM, "Used blink! %d\n", ent->client->pers.num_blinks);
-				AngleVectors(ent->client->v_angle, forward, NULL, up);
-				VectorScale(forward, 1000, ent->velocity);
-				ent->client->pers.num_blinks--;
+		if (!Q_stricmp((ent->client->pers.hero), "Tracer") && ent->client->pers.num_blinks >= 0){
+			gi.bprintf(PRINT_MEDIUM, "Used blink! %.0f\n", ent->client->pers.num_blinks);
+			AngleVectors(ent->client->v_angle, forward, NULL, up);
+			VectorScale(forward, 1000, ent->velocity);
+			ent->client->pers.num_blinks-=1.0;
 			}
-		}
 		return;
 	}
 

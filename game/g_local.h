@@ -894,7 +894,7 @@ typedef struct
 	//tracer
 	float		cldn_blink;
 	float		cldn_recall;
-	int			num_blinks;
+	float			num_blinks;
 	vec3_t		pos_to_recall;
 
 	//pharah
