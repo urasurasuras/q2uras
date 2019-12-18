@@ -1,4 +1,20 @@
+Uras Oran
+IT266
+Quake 2 - Overwatch mod
 
+Project description:
+	Overwatch! Featuring McCree, Tracer, Hanzo, Pharah, Winston
+Testable deliverables:
+	5 heroes, each correspond to one weapon
+	8 hero abilties
+Instructions:
+	Open the console and write "give hero" 
+	This will give you access to all the weapons and their ammo of their corresponding heroes
+ 
+Shortcut properties:
+	+set game MyMod		Launches mod
+
+=============================================================================
 This is the complete source code for Quake 2, version 3.19, buildable with
 visual C++ 6.0.  The linux version should be buildable, but we haven't
 tested it for the release.
