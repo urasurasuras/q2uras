@@ -321,12 +321,12 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero		Leap				\" "
-			"xv 50 yv 172 string2 \"%s			%.0f/%.0f			\" ",
-			"medium",
+			"xv 50 yv 164 string2 \" Hero						Leap						\" "
+			"xv 50 yv 172 string2 \"%s							%.0f/%.0f					\" ",
+			"Medium",
 			level.level_name,
 			game.helpmessage1,
-			game.helpmessage2,
+			"SHIFT - Leap",
 			persist.hero,
 			(level.time-persist.cldn_wleap), _wleap
 			);
@@ -339,12 +339,12 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero		Scatter			\" "
-			"xv 50 yv 172 string2 \"%s			%.0f/%.0f			\" ",
-			"medium",
+			"xv 50 yv 164 string2 \" Hero						Scatter						\" "
+			"xv 50 yv 172 string2 \"%s							%.0f/%.0f					\" ",
+			"Hard",
 			level.level_name,
 			game.helpmessage1,
-			game.helpmessage2,
+			"E - Scatter Arrow",
 			persist.hero,
 			(level.time - persist.cldn_scatter), _scatter
 			);
@@ -356,12 +356,12 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero		Rckt. Boost		Fuel\" "
-			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f\" ",
-			"medium",
+			"xv 50 yv 164 string2 \" Hero				Rckt. Boost					Fuel\" "
+			"xv 50 yv 172 string2 \"%s						%.0f/%.0f							%.0f/1000\" ",
+			"Easy",
 			level.level_name,
 			game.helpmessage1,
-			game.helpmessage2,
+			"SHIFT - Rocket Boost\nE - Hover",
 			persist.hero,
 			(level.time - persist.cldn_rjump), _rjump, persist.booster_fuel
 			);
@@ -373,12 +373,12 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero		Roll		Flash\" "
-			"xv 50 yv 172 string2 \"%s			%.0f/%.0f		%.0f/%0.f\" ",
-			"medium",
+			"xv 50 yv 164 string2 \" Hero						Roll						Flash\" "
+			"xv 50 yv 172 string2 \"%s							%.0f/%.0f					%.0f/%0.f\" ",
+			"Medium",
 			level.level_name,
-			game.helpmessage1,
-			game.helpmessage2,
+			"Armed with his Peacekeeper revolver,\n McCree takes out targets with deadeye\n precision and dives out of\n danger with eagle-like speed.",
+			"SHIFT - Roll \n E - Flashbang",
 			persist.hero,
 			(level.time - persist.cldn_mcroll), _mcroll,
 			(level.time - persist.cldn_flash ), _flash
@@ -391,12 +391,12 @@ void HelpComputer (edict_t *ent)
 			"xv 0 yv 24 cstring2 \"%s\" "		// level name
 			"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 			"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-			"xv 50 yv 164 string2 \" Hero		Blinks		Recall\" "
-			"xv 50 yv 172 string2 \"%s			%.0f/3		%.0f/%.0f\" ",
-			"medium",
+			"xv 50 yv 164 string2 \" Hero						Blinks						Recall\" "
+			"xv 50 yv 172 string2 \"%s							%.0f/3						%.0f/%.0f\" ",
+			"Medium",
 			level.level_name,
 			game.helpmessage1,
-			game.helpmessage2,
+			"SHIFT - Blink\nE - Recall (Sombra translocator)",
 			persist.hero,
 			(persist.num_blinks),
 			(level.time - persist.cldn_recall), _recall
