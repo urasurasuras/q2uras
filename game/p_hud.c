@@ -325,7 +325,7 @@ void HelpComputer (edict_t *ent)
 			"xv 50 yv 172 string2 \"%s							%.0f/%.0f					\" ",
 			"Medium",
 			level.level_name,
-			game.helpmessage1,
+			"Winston wields impressive inventions—a jump pack,\n electricity-blasting Tesla Cannon, \nportable shield projector and more—with\n literal gorilla strength.",
 			"SHIFT - Leap",
 			persist.hero,
 			(level.time-persist.cldn_wleap), _wleap
@@ -343,7 +343,7 @@ void HelpComputer (edict_t *ent)
 			"xv 50 yv 172 string2 \"%s							%.0f/%.0f					\" ",
 			"Hard",
 			level.level_name,
-			game.helpmessage1,
+			"Hanzo’s versatile arrows can reveal his enemies\n or fragment to strike multiple targets.\n He can scale walls to fire his bow\n from on high, or summon a titanic spirit dragon.",
 			"E - Scatter Arrow",
 			persist.hero,
 			(level.time - persist.cldn_scatter), _scatter
@@ -360,7 +360,7 @@ void HelpComputer (edict_t *ent)
 			"xv 50 yv 172 string2 \"%s						%.0f/%.0f							%.0f/1000\" ",
 			"Easy",
 			level.level_name,
-			game.helpmessage1,
+			"Soaring through the air in her combat armor,\n and armed with a launcher that lays\n down high-explosive rockets\n Pharah is a force to be reckoned with.",
 			"SHIFT - Rocket Boost\nE - Hover",
 			persist.hero,
 			(level.time - persist.cldn_rjump), _rjump, persist.booster_fuel
@@ -395,7 +395,7 @@ void HelpComputer (edict_t *ent)
 			"xv 50 yv 172 string2 \"%s							%.0f/3						%.0f/%.0f\" ",
 			"Medium",
 			level.level_name,
-			game.helpmessage1,
+			"Toting twin pulse pistols, energy-based time\n bombs, and rapid-fire banter,\n Tracer is able to blink through\n space and rewind her personal timeline as she\n battles to right wrongs the world over.",
 			"SHIFT - Blink\nE - Recall (Sombra translocator)",
 			persist.hero,
 			(persist.num_blinks),
